@@ -1,0 +1,42 @@
+{
+  "header": {
+    "main": "Home",
+    "archive": "Archive",
+    "bookmarks": "Bookmarks",
+    "contact": "Contact",
+    "changeLang": "Change website's language"
+  },
+  "home": {
+    "title": "Welcome to the Archive",
+    "body": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum laboriosam velit ab ratione ipsam voluptatibus ducimus illum fugit placeat eligendi. Dolores iure incidunt laboriosam aperiam ullam magnam perspiciatis dicta nihil? Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus repellendus sequi nisi dolore autem, inventore nostrum ex consequatur voluptate magni at nemo esse modi praesentium quod iusto atque quisquam incidunt."
+  },
+  "archive": {
+    "searchHolder": "Search here",
+    "loadMore": "Load more",
+    "searchResult": "Search results",
+    "vpnWarning": "Attention: Brothers from Syria, Iran and others will not see the archive without",
+    "box": {
+      "author": "Author",
+      "show": "Read"
+    }
+  },
+  "post": {
+    "return": "Return",
+    "author": "Author",
+    "id": "Post ID",
+    "copy": "Copy",
+    "link": "Copy link",
+    "bookmark": "Bookmark post",
+    "invalidId": "Invalid ID",
+    "changeLang": "Change post's language"
+  },
+  "bookmarks": {
+    "messageSaved": "Bookmarked posts"
+  },
+  "contact": {
+    "messageUnavailable": "Unavailable"
+  },
+  "footer": {
+    "message": "Hello from footer"
+  }
+}
