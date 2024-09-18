@@ -3,7 +3,8 @@ import { Spin } from "antd";
 function Loading() {
   return (
     <div className="center-absolute">
-      <Spin tip="جاري التحميل..." size="large"></Spin>
+      <Spin size="large"></Spin>
+      {/* tip="جاري التحميل..." */}
     </div>
   );
 }

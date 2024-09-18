@@ -59,6 +59,7 @@ const Item = memo(function Item({ id, setBookmarks }) {
       : savedPost
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [, i] = useTranslation("global");
 
   // load post data from localStorage
   useEffect(() => {
@@ -81,7 +82,8 @@ const Item = memo(function Item({ id, setBookmarks }) {
 
   return (
     <List.Item>
-      <Typography.Text mark>{id}</Typography.Text> {aCode(post.title, false)}{" "}
+      <Typography.Text mark>{id}</Typography.Text>{" "}
+      {aCode(post.titles[i.language], false)}{" "}
       <div style={{ marginTop: ".7rem", display: "flex", gap: ".2rem" }}>
         <Button
           onClick={() => navigate(`/archive/${id}`)}
