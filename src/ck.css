@@ -1,0 +1,34 @@
+:root {
+  --ck-highlight-marker-yellow: #fdfd77;
+  --ck-highlight-marker-green: #62f962;
+  --ck-highlight-marker-pink: #fc7899;
+  --ck-highlight-marker-blue: #72ccfd;
+  --ck-highlight-pen-red: #e71313;
+  --ck-highlight-pen-green: #128a00;
+}
+
+.ck-content .marker-yellow {
+    background-color: var(--ck-highlight-marker-yellow)
+}
+
+.ck-content .marker-green {
+    background-color: var(--ck-highlight-marker-green)
+}
+
+.ck-content .marker-pink {
+    background-color: var(--ck-highlight-marker-pink)
+}
+
+.ck-content .marker-blue {
+    background-color: var(--ck-highlight-marker-blue)
+}
+
+.ck-content .pen-red {
+    background-color: transparent;
+    color: var(--ck-highlight-pen-red)
+}
+
+.ck-content .pen-green {
+    background-color: transparent;
+    color: var(--ck-highlight-pen-green)
+}

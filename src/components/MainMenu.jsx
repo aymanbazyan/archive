@@ -3,19 +3,24 @@ import { Menu } from "antd";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
-import SelectLanguage from "./SelectLanguage";
+import { saveToLocal } from "../helpers/helpers";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const MainMenu = () => {
   const location = useLocation();
   const [current, setCurrent] = useState(location.pathname.split("/")[1]);
-  const [t] = useTranslation("global");
+  const [t, i] = useTranslation("global");
 
   useEffect(() => {
     setCurrent(location.pathname.split("/")[1]);
   }, [location]);
 
   const handleMenu = (e) => {
-    if (e.key === "changeLang") return;
+    if (e.keyPath[1] === "changeLang") {
+      i.changeLanguage(e.key);
+      saveToLocal("lang", e.key);
+      window.location.reload();
+    }
     setCurrent(e.key);
   };
 
@@ -37,8 +42,20 @@ const MainMenu = () => {
       key: "contact",
     },
     {
-      label: <SelectLanguage />,
+      icon: (
+        <Icon icon="material-symbols:language" width="1.2em" height="1.2em" />
+      ),
       key: "changeLang",
+      children: [
+        {
+          key: "en",
+          label: "English",
+        },
+        {
+          key: "ar",
+          label: "العربية",
+        },
+      ],
     },
   ];
 

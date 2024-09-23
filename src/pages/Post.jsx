@@ -20,6 +20,10 @@ const StyledBodyText = styled.p`
   font-size: 1.2rem;
   white-space: pre-wrap !important;
 
+  & h1 {
+  line-height: 1.3;
+  }
+
   direction: ${(props) => props.$direction};
   * {
     direction: ${(props) => props.$direction};
@@ -29,6 +33,10 @@ const StyledBodyText = styled.p`
 const StyledSiteCard = styled.div`
   padding: 0 10%;
   word-wrap: break-word;
+
+  & * {
+    margin: 0;
+  }
 
   & .buttonsBox {
     & button:first-child {
