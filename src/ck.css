@@ -1,10 +1,10 @@
 :root {
-  --ck-highlight-marker-yellow: #fdfd77;
-  --ck-highlight-marker-green: #62f962;
-  --ck-highlight-marker-pink: #fc7899;
-  --ck-highlight-marker-blue: #72ccfd;
-  --ck-highlight-pen-red: #e71313;
-  --ck-highlight-pen-green: #128a00;
+    --ck-highlight-marker-yellow: #fdfd77;
+    --ck-highlight-marker-green: #62f962;
+    --ck-highlight-marker-pink: #fc7899;
+    --ck-highlight-marker-blue: #72ccfd;
+    --ck-highlight-pen-red: #e71313;
+    --ck-highlight-pen-green: #128a00;
 }
 
 .ck-content .marker-yellow {
@@ -31,4 +31,16 @@
 .ck-content .pen-green {
     background-color: transparent;
     color: var(--ck-highlight-pen-green)
+}
+
+.ck-content img {
+    width: 100% !important;
+    max-width: 30rem !important;
+}
+
+.ck-content hr {
+    margin: 15px 0;
+    height: 4px;
+    background: hsl(0, 0%, 87%);
+    border: 0;
 }
