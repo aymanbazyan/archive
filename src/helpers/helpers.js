@@ -77,9 +77,23 @@ const copyPost = () => {
     link.replaceWith(newElement); // Replace <a> with the new element
   });
 
-  const toCopy = `${window.location.origin}${window.location.pathname} \n ${doc.innerText}`;
+  const imgs = doc.querySelectorAll("img");
+  imgs.forEach((img) => {
+    const newElement = document.createElement("span");
+    newElement.textContent = `(${img.alt}) [${img.src}]`;
+    img.replaceWith(newElement);
+  });
 
-  // console.log(toCopy);
+  const spaces = doc.querySelectorAll("p");
+  spaces.forEach((space) => {
+    if (space.textContent === " ") {
+      const newElement = document.createElement("p");
+      newElement.textContent = "\n";
+      space.replaceWith(newElement);
+    }
+  });
+
+  const toCopy = `${window.location.origin}${window.location.pathname} \n ${doc.innerText}`;
 
   navigator.clipboard.writeText(toCopy);
 };
