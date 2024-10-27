@@ -93,6 +93,13 @@ const copyPost = () => {
     }
   });
 
+  const hrs = doc.querySelectorAll("hr");
+  hrs.forEach((hr) => {
+    const newElement = document.createElement("p");
+    newElement.textContent = "---------";
+    hr.replaceWith(newElement);
+  });
+
   const toCopy = `${window.location.origin}${window.location.pathname} \n ${doc.innerText}`;
 
   navigator.clipboard.writeText(toCopy);
