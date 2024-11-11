@@ -6,7 +6,7 @@ import Loading from "../components/Loading";
 import styled from "styled-components";
 import {
   aCode,
-  copyPost,
+  getPostContent,
   getFromLocal,
   isTextStartsWithArabic,
   saveToLocal,
@@ -21,7 +21,7 @@ const StyledBodyText = styled.p`
   white-space: pre-wrap !important;
 
   & h1 {
-  line-height: 1.3;
+    line-height: 1.3;
   }
 
   direction: ${(props) => props.$direction};
@@ -129,7 +129,11 @@ const Post = () => {
             icon={<Icon icon="ph:copy" />}
             title={t("post.copy")}
             onClick={() => {
-              copyPost();
+              const postContent = getPostContent();
+
+              const toCopy = `${window.location.origin}${window.location.pathname} \n\n ${decryptedTitle} \n\n ${postContent}`;
+              navigator.clipboard.writeText(toCopy);
+
               bodyRef.current.innerHTML = decryptedBody; // links get corrupt, return it to normal
             }}
           />

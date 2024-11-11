@@ -40,7 +40,10 @@ const Contact = () => {
           </a>
         </li>
 
-        <img src="https://i.imgur.com/lXBcM9c.png" alt="logo" />
+        <img
+          src="https://archive.org/download/alarshif-high-resolution-logo/alarshif-high-resolution-logo.png"
+          alt="logo"
+        />
       </StyledList>
     </div>
   );

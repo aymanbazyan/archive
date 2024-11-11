@@ -20,6 +20,7 @@ import global_ar from "./translations/ar/global.json";
 import i18next from "i18next";
 import { I18nextProvider } from "react-i18next";
 import { getFromLocal, saveToLocal } from "./helpers/helpers";
+import AppWrapper from "./components/AppWrapper";
 
 let userLang = getFromLocal("lang");
 if (!userLang) {
@@ -55,7 +56,7 @@ function App() {
       <UniversalStyle />
       <BrowserRouter>
         <Suspense fallback={<Loading />}>
-          <div className="App">
+          <AppWrapper>
             <div>
               <Header>
                 <MainMenu />
@@ -78,7 +79,7 @@ function App() {
             </div>
 
             <Footer />
-          </div>
+          </AppWrapper>
         </Suspense>
       </BrowserRouter>
     </I18nextProvider>

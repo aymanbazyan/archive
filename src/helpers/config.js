@@ -3,10 +3,10 @@ export const POST_SHOWCASE_LENGTH = 150;
 export const TIME_BEFORE_REFETCH_POST = 86400000; // 1DAY
 
 export const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID,
+  apiKey: "AIzaSyCrNzeZ3fMIC3IjhKdyWazlBao89vWH7Hs",
+  authDomain: "al-arshif.firebaseapp.com",
+  projectId: "al-arshif",
+  storageBucket: "al-arshif.appspot.com",
+  messagingSenderId: "581671585417",
+  appId: "1:581671585417:web:d98e2a6adbdde3c7ff6858",
 };

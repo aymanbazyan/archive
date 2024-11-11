@@ -54,3 +54,7 @@
     font-style: italic;
     border-left: solid 5px hsl(0, 0%, 80%);
 }
+
+.ck-content u {
+    text-decoration: underline solid 2px;
+}

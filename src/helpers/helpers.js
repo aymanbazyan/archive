@@ -67,7 +67,7 @@ function toggleSave(id, setIsBookmarked) {
   }
 }
 
-const copyPost = () => {
+const getPostContent = () => {
   let doc = document.querySelector(".ck-content");
 
   const links = doc.querySelectorAll("a"); // Get all <a> elements inside the div
@@ -100,13 +100,11 @@ const copyPost = () => {
     hr.replaceWith(newElement);
   });
 
-  const toCopy = `${window.location.origin}${window.location.pathname} \n ${doc.innerText}`;
-
-  navigator.clipboard.writeText(toCopy);
+  return doc.innerText;
 };
 
 export {
-  copyPost,
+  getPostContent,
   aCode,
   saveToLocal,
   getFromLocal,

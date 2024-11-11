@@ -4,6 +4,7 @@ import styled from "styled-components";
 const StyledContainer = styled.div`
   padding: 1rem;
   line-height: 1.7;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,6 +26,7 @@ const Home = () => {
 
   return (
     <StyledContainer>
+      <p>{t("home.head")}</p>
       <h3>{t("home.title")}</h3>
       <p>{t("home.body")}</p>
     </StyledContainer>

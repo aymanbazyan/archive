@@ -86,13 +86,14 @@ const ArchiveBox = memo(function ({ index, setStopRendering }) {
 
   if (isLoading) return <Loading />;
   if (!post) return null;
+  // console.log(post);
   const bodyShowcase = aCode(post.bodies[i.language], false).slice(
     0,
     POST_SHOWCASE_LENGTH
   );
 
   return (
-    <Col>
+    <Col id={`post${post.id}`}>
       <Card
         title={
           <StyledTitle>
