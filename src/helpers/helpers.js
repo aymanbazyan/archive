@@ -80,7 +80,7 @@ const getPostContent = () => {
   const imgs = doc.querySelectorAll("img");
   imgs.forEach((img) => {
     const newElement = document.createElement("span");
-    newElement.textContent = `(${img.alt}) [${img.src}]`;
+    newElement.textContent = `(${img.alt || "File preview"}) [${img.src}]`;
     img.replaceWith(newElement);
   });
 

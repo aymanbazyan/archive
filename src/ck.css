@@ -36,6 +36,7 @@
 .ck-content img {
     width: 100% !important;
     max-width: 30rem !important;
+    height: auto;
 }
 
 .ck-content hr {
@@ -53,6 +54,7 @@
     margin-right: 0;
     font-style: italic;
     border-left: solid 5px hsl(0, 0%, 80%);
+    border-right: solid 5px hsl(0, 0%, 80%);
 }
 
 .ck-content u {
