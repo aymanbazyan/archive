@@ -60,3 +60,11 @@
 .ck-content u {
     text-decoration: underline solid 2px;
 }
+
+.ck-content code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.ck-content strong {
+    font-weight: 650;
+}

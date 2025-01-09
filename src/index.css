@@ -17,9 +17,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.App {
+  min-height: 100vh !important;
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  /* to push footer to end */
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
 }
 
 .center-absolute {
@@ -32,16 +37,58 @@ code {
   padding: .1rem;
 }
 
+
+/* Dark mode */
+/* :root {
+  --theme-main: hsl(240 10% 3.9%);
+  --theme-second: #ddd;
+  --theme-border: hsl(240 3.7% 15.9%);
+}
+
 .App {
-  height: 100vh !important;
-
-  /* to push footer to end */
-  display: flex;
-  flex-direction: column;
-
-  justify-content: space-between;
+  color: var(--theme-second);
+  background-color: var(--theme-main);
 }
 
-strong {
-  font-weight: 650;
+.ant-list-header,
+.ant-list-item {
+  color: var(--theme-second) !important;
+
 }
+
+.ant-list-split .ant-list-item,
+.ant-list-split .ant-list-header {
+  border-block-end: 1px solid rgba(251, 251, 251, 0.335);
+}
+
+.ant-card,
+.ant-card-head .ant-card-head-wrapper,
+.ant-btn,
+.ant-btn:hover,
+.ant-layout-footer,
+.ant-input-affix-wrapper,
+.ant-input-affix-wrapper input::placeholder {
+  background: var(--theme-main);
+  background-color: var(--theme-main);
+  color: var(--theme-second);
+}
+
+
+.ant-btn-dashed:not(:disabled):not(.ant-btn-disabled):hover,
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+  background: var(--theme-main);
+
+}
+
+.ant-layout-footer {
+  border-top: var(--theme-border) 1px solid;
+}
+
+.ant-card {
+  border: var(--theme-border) 1px solid;
+}
+*/
+/* .ck-content * {
+  color: var(--theme-second) !important;
+  background-color: var(--theme-main) !important;
+}  */
