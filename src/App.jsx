@@ -1,10 +1,14 @@
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Layout } from "antd";
 const { Header } = Layout;
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import { DEFAULT_POSTS_NUM } from "./helpers/config";
 import { createGlobalStyle } from "styled-components";
+import {
+  enable as enableDarkMode,
+  disable as disableDarkMode,
+} from "darkreader";
 
 const MainMenu = lazy(() => import("./components/MainMenu"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -51,6 +55,27 @@ direction: ${userLang === "ar" || userLang === "he" ? "rtl" : "ltr"};
 function App() {
   const [loadNum, setLoadNum] = useState(DEFAULT_POSTS_NUM);
 
+  // Theme stuff
+  const [theme, setTheme] = useState(
+    getFromLocal("theme") === "dark" ? "dark" : "light"
+  );
+  useEffect(
+    function () {
+      if (theme === "light") {
+        disableDarkMode();
+      } else {
+        enableDarkMode({
+          brightness: 100,
+          contrast: 90,
+          sepia: 10,
+        });
+      }
+
+      saveToLocal("theme", theme);
+    },
+    [theme]
+  );
+
   return (
     <I18nextProvider i18n={i18next}>
       <UniversalStyle />
@@ -59,7 +84,7 @@ function App() {
           <AppWrapper>
             <div>
               <Header>
-                <MainMenu />
+                <MainMenu theme={theme} setTheme={setTheme} />
               </Header>
               <Routes>
                 <Route index element={<Home />} />

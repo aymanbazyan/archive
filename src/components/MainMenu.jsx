@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { saveToLocal } from "../helpers/helpers";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
-const MainMenu = () => {
+const MainMenu = ({ setTheme, theme }) => {
   const location = useLocation();
   const [current, setCurrent] = useState(location.pathname.split("/")[1]);
   const [t, i] = useTranslation("global");
@@ -16,6 +16,7 @@ const MainMenu = () => {
   }, [location]);
 
   const handleMenu = (e) => {
+    if (e.key === "changeTheme") return;
     if (e.keyPath[1] === "changeLang") {
       i.changeLanguage(e.key);
       saveToLocal("lang", e.key);
@@ -56,6 +57,17 @@ const MainMenu = () => {
           label: "العربية",
         },
       ],
+    },
+    {
+      icon: (
+        <Icon
+          icon={theme === "dark" ? "uil:moon" : "uil:sun"}
+          width="1.2rem"
+          height="1.2rem"
+        />
+      ),
+      key: "changeTheme",
+      onClick: () => setTheme(() => (theme === "dark" ? "light" : "dark")),
     },
   ];
 
