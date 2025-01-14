@@ -198,7 +198,7 @@ const CustomComment = ({ item, userName, postId }) => {
             <Avatar src={item.avatar} alt={item.author} />
           </div>
           <div>
-            <div style={{ marginBottom: "4px" }}>
+            <div style={{ marginBottom: "4px", display: "flex", gap: ".5rem"  }}>
               <strong>{item.author}</strong>{" "}
               <span style={{ color: "var(--color-gray)" }}>
                 {formatDateTime(item.datetime.seconds * 1000)}
