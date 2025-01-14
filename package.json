@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "antd": "^5.17.4",
+    "antd": "^5.23.0",
     "darkreader": "^4.9.96",
     "firebase": "^10.12.2",
     "i18next": "^23.15.1",
