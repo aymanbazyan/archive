@@ -28,13 +28,17 @@ match /databases/{database}/documents {
 
 // Function to validate the comment object
 function validateComment(data) {
-return data.size() == 6
-&& data.author is string
-&& data.avatar is string
-&& data.content is string && data.content.size() <= 500
-&& data.datetime is timestamp
-&& data.id is string
-&& data.userId is string;
+  return data.author is string
+    && data.author.size() > 0 && data.author.size() <= 100
+    && data.avatar is string
+    && data.avatar.size() > 0 && data.avatar.size() <= 200
+    && data.content is string
+    && data.content.size() > 0 && data.content.size() <= 500
+    && data.datetime is timestamp
+    && data.id is string
+    && data.id.size() > 0 && data.id.size() <= 50
+    && data.userId is string
+    && data.userId.size() > 0 && data.userId.size() <= 50;
 }
 ```
 
