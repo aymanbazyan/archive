@@ -1,6 +1,7 @@
 export const DEFAULT_POSTS_NUM = 10;
 export const POST_SHOWCASE_LENGTH = 150;
 export const TIME_BEFORE_REFETCH_POST = 86400000; // 1DAY
+export const COMMENT_MAX_LENGTH = 500;
 
 export const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,

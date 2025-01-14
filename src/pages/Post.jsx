@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Card, Button, Typography, Flex, Select } from "antd";
+import { Card, Button, Typography, Flex, Select, Divider } from "antd";
 import { fetchData } from "../features/firebase";
 import { Link, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
@@ -15,6 +15,7 @@ import {
 import { TIME_BEFORE_REFETCH_POST } from "../helpers/config";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useTranslation } from "react-i18next";
+import CommentSection from "../components/CommentSection";
 
 const StyledBodyText = styled.p`
   font-size: 1.2rem;
@@ -41,7 +42,7 @@ const StyledSiteCard = styled.div`
   & .buttonsBox {
     & button:first-child {
       width: auto;
-      height: auto;
+      height: 2rem;
     }
     & button {
       width: 2.5rem;
@@ -194,6 +195,8 @@ const Post = () => {
           <Link to={`/archive`}>{t("post.return")}</Link>
         </Button>
       </Card>
+      <Divider />
+      <CommentSection postId={post.id} />
     </StyledSiteCard>
   );
 };

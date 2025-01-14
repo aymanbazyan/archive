@@ -103,6 +103,18 @@ const getPostContent = () => {
   return doc.innerText;
 };
 
+const formatDateTime = (date) => {
+  if (!date) return;
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
+};
+
 export {
   getPostContent,
   aCode,
@@ -110,4 +122,5 @@ export {
   getFromLocal,
   toggleSave,
   isTextStartsWithArabic,
+  formatDateTime,
 };

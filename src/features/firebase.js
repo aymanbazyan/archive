@@ -1,3 +1,4 @@
+import { firebaseConfig } from "../helpers/config";
 import { initializeApp } from "firebase/app";
 import {
   collection,
@@ -7,18 +8,27 @@ import {
   getFirestore,
   query,
   where,
+  deleteDoc,
+  orderBy,
+  setDoc,
+  limit,
+  serverTimestamp,
 } from "firebase/firestore";
-import { firebaseConfig } from "../helpers/config";
 
-// Your web app's Firebase configuration
-// Import the functions you need from the SDKs you need
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const postsRef = collection(db, "posts");
+const commentsRef = collection(db, "comments");
+const provider = new GoogleAuthProvider();
+const auth = getAuth();
 
 async function fetchData(path1, path2) {
   try {
@@ -42,4 +52,55 @@ async function searchPosts(term) {
   return results;
 }
 
-export { fetchData, searchPosts };
+async function fetchSubData(postId, limitNum) {
+  const dataRef = collection(db, `comments/${postId}/comments`);
+  const querySnapshot = await getDocs(
+    query(dataRef, orderBy("datetime", "desc"), limit(limitNum))
+  );
+
+  const comments = [];
+  querySnapshot.forEach((doc) => {
+    if (doc.exists()) {
+      comments.push(doc.data());
+    }
+  });
+
+  return comments;
+}
+
+async function postComment(postId, dataObj) {
+  await setDoc(doc(commentsRef, postId, "comments", dataObj.id), dataObj);
+}
+
+async function deleteComment(postId, itemId) {
+  await deleteDoc(doc(commentsRef, postId, "comments", itemId));
+}
+
+async function signInWithGoogle() {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+async function signOutAuth() {
+  await signOut(auth);
+}
+
+export {
+  // posts
+  fetchData,
+  searchPosts,
+
+  // comments stuff
+  fetchSubData,
+  postComment,
+  deleteComment,
+  serverTimestamp,
+
+  // auth
+  auth,
+  signInWithGoogle,
+  signOutAuth,
+};

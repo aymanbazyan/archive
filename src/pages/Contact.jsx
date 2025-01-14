@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import CommentSection from "../components/CommentSection";
 
 const StyledList = styled.ul`
   list-style: none;
@@ -44,6 +45,7 @@ const Contact = () => {
           src="https://archive.org/download/alarshif-high-resolution-logo/alarshif-high-resolution-logo.png"
           alt="logo"
         />
+        <CommentSection postId="general" />
       </StyledList>
     </div>
   );
