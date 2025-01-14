@@ -12,9 +12,23 @@ import {
   signOutAuth,
 } from "../features/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { formatDateTime } from "../helpers/helpers";
+import { formatDateTime, isTextStartsWithArabic } from "../helpers/helpers";
 import { COMMENT_MAX_LENGTH } from "../helpers/config";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+
+  & textarea {
+    direction: ${(a) => (a.$direction ? "rtl" : "ltr")} !important;
+  }
+
+  display: grid;
+  gap: 1rem;
+`;
 
 const CommentSection = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -81,15 +95,7 @@ const CommentSection = ({ postId }) => {
 
   if (loading) return <p>{loading}</p>;
   return (
-    <div
-      style={{
-        maxWidth: "600px",
-        margin: "0 auto",
-        padding: "20px",
-        display: "grid",
-        gap: "1rem",
-      }}
-    >
+    <StyledContainer $direction={isTextStartsWithArabic(value)}>
       <h2>{t("comments.title")}</h2>
       {user && (
         <Form.Item>
@@ -100,7 +106,9 @@ const CommentSection = ({ postId }) => {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder={t("comments.placeholder")}
-            style={{ marginBottom: "1rem" }}
+            style={{
+              marginBottom: "1rem",
+            }}
           />
         </Form.Item>
       )}
@@ -162,7 +170,7 @@ const CommentSection = ({ postId }) => {
           load more
         </Button>
       )}
-    </div>
+    </StyledContainer>
   );
 };
 
@@ -196,7 +204,16 @@ const CustomComment = ({ item, userName, postId }) => {
                 {formatDateTime(item.datetime.seconds * 1000)}
               </span>
             </div>
-            <div>{item.content}</div>
+            <div
+              style={{
+                direction: isTextStartsWithArabic(item?.content)
+                  ? "rtl"
+                  : "ltr",
+                justifySelf: "baseline",
+              }}
+            >
+              {item.content}
+            </div>
           </div>
         </div>
 
@@ -206,6 +223,7 @@ const CustomComment = ({ item, userName, postId }) => {
             <Button
               onClick={async () => {
                 await deleteComment(postId, item.id);
+                // doesn't work for some reason
                 // setComments((oldValues) => {
                 //   return oldValues.filter((com) => com !== item.id);
                 // });
