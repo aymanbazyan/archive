@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Avatar, Form, Button, List, Input, Flex, Typography } from "antd";
 const { TextArea } = Input;
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -12,7 +12,11 @@ import {
   signOutAuth,
 } from "../features/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { formatDateTime, isTextStartsWithArabic } from "../helpers/helpers";
+import {
+  formatDateTime,
+  isTextStartsWithArabic,
+  mergeCommonObjects,
+} from "../helpers/helpers";
 import { COMMENT_MAX_LENGTH } from "../helpers/config";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
@@ -38,6 +42,8 @@ const CommentSection = ({ postId }) => {
   const [limit, setLimit] = useState(5);
   const name = user?.email?.split("@")[0];
   const [t] = useTranslation("global");
+  const loadedComments = useRef(0);
+  const [hideLoadMore, setHideLoadMore] = useState(false);
 
   useEffect(function () {
     const unSub = onAuthStateChanged(auth, async (loggedUser) => {
@@ -59,11 +65,19 @@ const CommentSection = ({ postId }) => {
       async function init() {
         try {
           setLoading("Loading...");
-          const comments = await fetchSubData(postId, limit);
-          setComments(comments);
-          setLoading("");
+          const newComments = await fetchSubData(postId, limit);
+          if (comments.length === newComments.length && comments.length > 0) {
+            setHideLoadMore(true);
+            return;
+          }
+          loadedComments.current = newComments.length;
+
+          const common = mergeCommonObjects(newComments, comments, "id");
+          setComments(common);
         } catch (err) {
           console.log(err);
+        } finally {
+          setLoading("");
         }
       }
       init();
@@ -113,20 +127,28 @@ const CommentSection = ({ postId }) => {
         </Form.Item>
       )}
       <Form.Item>
-        <Flex align="center" gap={".5rem"} wrap>
+        <Flex align="center" gap={".5rem"} wrap={"wrap"}>
           {user ? (
-            <>
-              <Button
-                type="primary"
-                onClick={handleSubmit}
-                disabled={!value.trim()}
-              >
-                {t("comments.button")}
-              </Button>
-              {t("comments.signed")}
-              <Typography.Text type="success" strong>
-                {name}
-              </Typography.Text>
+            <Flex
+              gap={".5rem"}
+              justify={"space-between"}
+              wrap={"wrap"}
+              style={{ width: "100%" }}
+            >
+              <Flex gap={".5rem"} align={"center"} wrap={"wrap"}>
+                <Button
+                  type="primary"
+                  onClick={handleSubmit}
+                  disabled={!value.trim()}
+                >
+                  {t("comments.button")}
+                </Button>
+                {t("comments.signed")}
+                <Typography.Text type="success" strong>
+                  {name}
+                </Typography.Text>
+              </Flex>
+
               <Button
                 onClick={async () => {
                   const confirmed = confirm(t("comments.logoutConfirm"));
@@ -136,7 +158,7 @@ const CommentSection = ({ postId }) => {
                 shape="circle"
                 icon={<Icon icon="mdi:logout" width="20" height="20" />}
               />
-            </>
+            </Flex>
           ) : (
             <>
               {t("comments.mustSign")}
@@ -165,8 +187,12 @@ const CommentSection = ({ postId }) => {
           <CustomComment item={item} userName={name} postId={postId} />
         )}
       />
-      {comments > 0 && (
-        <Button type="dashed" onClick={() => setLimit((prev) => prev + 3)}>
+      {comments.length > 0 && !hideLoadMore && (
+        <Button
+          style={{ width: "fit-content" }}
+          type="dashed"
+          onClick={() => setLimit((prev) => prev + 3)}
+        >
           load more
         </Button>
       )}
@@ -198,10 +224,10 @@ const CustomComment = ({ item, userName, postId }) => {
             <Avatar src={item.avatar} alt={item.author} />
           </div>
           <div>
-            <div style={{ marginBottom: "4px", display: "flex", gap: ".5rem"  }}>
+            <div style={{ marginBottom: "4px", display: "flex", gap: ".5rem" }}>
               <strong>{item.author}</strong>{" "}
               <span style={{ color: "var(--color-gray)" }}>
-                {formatDateTime(item.datetime.seconds * 1000)}
+                {formatDateTime(item?.datetime?.seconds * 1000)}
               </span>
             </div>
             <div
