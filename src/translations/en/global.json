@@ -43,5 +43,16 @@
   },
   "footer": {
     "message": "Exalted is Allah"
+  },
+  "comments": {
+    "title": "Comments",
+    "placeholder": "Write a comment...",
+    "button": "Add Comment",
+    "mustSign": "You must login to comment",
+    "signed": "You're logged in as",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "footerOne": "comment",
+    "footerMany": "comments",
+    "footerNone": ", be the first to comment !"
   }
 }
