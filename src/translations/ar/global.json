@@ -53,6 +53,9 @@
     "logoutConfirm": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
     "footerOne": "تعليق",
     "footerMany": "تعليقات",
-    "footerNone": " , كن أول من يعلق !"
+    "footerNone": " , كن أول من يعلق !",
+    "loadMore": "تحميل المزيد",
+    "showMore": "إظهار المزيد",
+    "showLess": "إظهار أقل"
   }
 }
