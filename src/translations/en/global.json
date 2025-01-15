@@ -53,6 +53,9 @@
     "logoutConfirm": "Are you sure you want to logout?",
     "footerOne": "comment",
     "footerMany": "comments",
-    "footerNone": ", be the first to comment !"
+    "footerNone": ", be the first to comment !",
+    "loadMore": "Load more",
+    "showMore": "Show more",
+    "showLess": "Show less"
   }
 }
