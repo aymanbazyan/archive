@@ -241,11 +241,12 @@ const CustomComment = ({ item, userName, postId }) => {
               expandButtonText={<Link>{t("comments.showMore")}</Link>}
               collapseButtonText={<Link>{t("comments.showLess")}</Link>}
               className="contentBox"
-              style={{
+              styles={{
                 direction: isTextStartsWithArabic(item?.content)
                   ? "rtl"
                   : "ltr",
               }}
+              color="var(--color-main)"
             >
               {item.content}
             </TextExpander>

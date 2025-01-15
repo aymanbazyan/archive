@@ -5,14 +5,16 @@ function TextExpander({
   collapsedNumLetters = 10,
   expandButtonText = "Show more",
   collapseButtonText = "Show less",
-  className,
+  className = "",
   expanded,
   children = null,
+  styles = {},
+  color = "",
 }) {
   const [isExpanded, setIsExpanded] = useState(expanded);
 
   return (
-    <div className={`box ${className}`}>
+    <div style={styles} className={`${className}`}>
       {isExpanded
         ? children
         : `${children?.slice(0, collapsedNumLetters)}${
@@ -21,7 +23,7 @@ function TextExpander({
       {children.length > collapsedNumLetters && (
         <>
           <br />
-          <Link onClick={() => setIsExpanded(!isExpanded)}>
+          <Link style={{ color }} onClick={() => setIsExpanded(!isExpanded)}>
             {isExpanded ? collapseButtonText : expandButtonText}
           </Link>
         </>
