@@ -4,8 +4,8 @@ If you want to clone this app for yourself, edit:
 
 ```
 service cloud.firestore {
-match /databases/{database}/documents {
-
+  match /databases/{database}/documents {
+  
     // Rule for posts/{postId}
     match /posts/{postId} {
       // Only the admin can write; everyone can read
@@ -15,16 +15,23 @@ match /databases/{database}/documents {
 
     // Rule for comments/{postId}/comments/{commentId}
     match /comments/{postId}/comments/{commentId} {
-      // Everyone can read and write
+      // Everyone can read and write comments with proper validation
       allow read: if true;
-      allow create: if request.auth != null && validateComment(request.resource.data);
-      allow update: if request.auth != null && request.auth.uid == resource.data.userId && validateComment(request.resource.data);
+      allow create: if request.auth != null 
+        && validateComment(request.resource.data)
+        && request.resource.data.author == request.auth.token.email.split('@')[0]
+        && request.resource.data.avatar == request.auth.token.picture
+        && request.resource.data.userId == request.auth.uid;
+      allow update: if request.auth != null 
+        && request.auth.uid == resource.data.userId 
+        && validateComment(request.resource.data)
+        && request.resource.data.author == request.auth.token.email.split('@')[0]
+        && request.resource.data.avatar == request.auth.token.picture
+        && request.resource.data.userId == request.auth.uid;
       allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
     }
-
+  }
 }
-}
-
 
 // Function to validate the comment object
 function validateComment(data) {
@@ -40,6 +47,7 @@ function validateComment(data) {
     && data.userId is string
     && data.userId.size() > 0 && data.userId.size() <= 50;
 }
+
 ```
 
 - EDIT THE ADMIN_UID_1234
