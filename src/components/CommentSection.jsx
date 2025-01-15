@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, Form, Button, List, Input, Flex, Typography } from "antd";
 const { TextArea } = Input;
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -12,14 +12,12 @@ import {
   signOutAuth,
 } from "../features/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import {
-  formatDateTime,
-  isTextStartsWithArabic,
-  mergeCommonObjects,
-} from "../helpers/helpers";
+import { formatDateTime, isTextStartsWithArabic } from "../helpers/helpers";
 import { COMMENT_MAX_LENGTH } from "../helpers/config";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import Link from "antd/es/typography/Link";
+import TextExpander from "./TextExpander";
 
 const StyledContainer = styled.div`
   max-width: 600px;
@@ -32,6 +30,11 @@ const StyledContainer = styled.div`
 
   display: grid;
   gap: 1rem;
+
+  & .contentBox {
+    justify-self: baseline;
+    white-space: break-spaces !important;
+  }
 `;
 
 const CommentSection = ({ postId }) => {
@@ -42,7 +45,6 @@ const CommentSection = ({ postId }) => {
   const [limit, setLimit] = useState(5);
   const name = user?.email?.split("@")[0];
   const [t] = useTranslation("global");
-  const loadedComments = useRef(0);
   const [hideLoadMore, setHideLoadMore] = useState(false);
 
   useEffect(function () {
@@ -64,20 +66,22 @@ const CommentSection = ({ postId }) => {
     function () {
       async function init() {
         try {
-          setLoading("Loading...");
+          // setLoading("Loading...");
           const newComments = await fetchSubData(postId, limit);
-          if (comments.length === newComments.length && comments.length > 0) {
-            setHideLoadMore(true);
-            return;
-          }
-          loadedComments.current = newComments.length;
+          if (newComments.length - comments.length < 5) setHideLoadMore(true);
 
-          const common = mergeCommonObjects(newComments, comments, "id");
-          setComments(common);
+          // Use a set-like behavior to avoid duplicates
+          const uniqueComments = [
+            ...new Map(
+              [...comments, ...newComments].map((item) => [item.id, item])
+            ).values(),
+          ];
+
+          setComments(uniqueComments);
         } catch (err) {
           console.log(err);
         } finally {
-          setLoading("");
+          // setLoading("");
         }
       }
       init();
@@ -187,13 +191,13 @@ const CommentSection = ({ postId }) => {
           <CustomComment item={item} userName={name} postId={postId} />
         )}
       />
-      {comments.length > 0 && !hideLoadMore && (
+      {comments.length >= 5 && !hideLoadMore && (
         <Button
           style={{ width: "fit-content" }}
           type="dashed"
-          onClick={() => setLimit((prev) => prev + 3)}
+          onClick={() => setLimit((prev) => prev + 5)}
         >
-          load more
+          {t("comments.loadMore")}
         </Button>
       )}
     </StyledContainer>
@@ -203,6 +207,8 @@ const CommentSection = ({ postId }) => {
 export default CommentSection;
 
 const CustomComment = ({ item, userName, postId }) => {
+  const [t] = useTranslation("global");
+
   return (
     <div
       style={{
@@ -230,16 +236,19 @@ const CustomComment = ({ item, userName, postId }) => {
                 {formatDateTime(item?.datetime?.seconds * 1000)}
               </span>
             </div>
-            <div
+            <TextExpander
+              collapsedNumLetters={50}
+              expandButtonText={<Link>{t("comments.showMore")}</Link>}
+              collapseButtonText={<Link>{t("comments.showLess")}</Link>}
+              className="contentBox"
               style={{
                 direction: isTextStartsWithArabic(item?.content)
                   ? "rtl"
                   : "ltr",
-                justifySelf: "baseline",
               }}
             >
               {item.content}
-            </div>
+            </TextExpander>
           </div>
         </div>
 
@@ -249,10 +258,10 @@ const CustomComment = ({ item, userName, postId }) => {
             <Button
               onClick={async () => {
                 await deleteComment(postId, item.id);
-                // doesn't work for some reason
-                // setComments((oldValues) => {
-                //   return oldValues.filter((com) => com !== item.id);
-                // });
+
+                // setComments((prevComments) =>
+                //   prevComments.filter((comment) => comment.id !== item.id)
+                // );
                 location.reload();
               }}
               shape="circle"

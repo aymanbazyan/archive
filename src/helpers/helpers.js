@@ -115,18 +115,18 @@ const formatDateTime = (date) => {
   return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
 };
 
-function mergeCommonObjects(newArr, arr, commonKey) {
-  const merged = [...arr];
+// function mergeCommonObjects(newArr, arr, commonKey) {
+//   const merged = [...arr];
 
-  newArr.forEach((newItem) => {
-    const existing = merged.find(
-      (obj) => obj[commonKey] === newItem[commonKey]
-    );
-    if (!existing) merged.push(newItem);
-  });
+//   newArr.forEach((newItem) => {
+//     const existing = merged.find(
+//       (obj) => obj[commonKey] === newItem[commonKey]
+//     );
+//     if (!existing) merged.push(newItem);
+//   });
 
-  return merged;
-}
+//   return merged;
+// }
 
 export {
   getPostContent,
@@ -136,5 +136,5 @@ export {
   toggleSave,
   isTextStartsWithArabic,
   formatDateTime,
-  mergeCommonObjects,
+  // mergeCommonObjects,
 };
