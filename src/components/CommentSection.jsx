@@ -95,7 +95,7 @@ const CommentSection = ({ postId }) => {
       const comment = {
         author: name,
         avatar: user.photoURL,
-        content: value.trim(),
+        content: value,
         datetime: serverTimestamp(),
         id: crypto.randomUUID(),
         userId: user.uid,
@@ -232,7 +232,7 @@ const CustomComment = ({ item, userName, postId }) => {
           <div>
             <div style={{ marginBottom: "4px", display: "flex", gap: ".5rem" }}>
               <strong>{item.author}</strong>{" "}
-              <span style={{ color: "var(--color-gray)" }}>
+              <span style={{ color: "var(--color-gray)", lineHeight: 1.2 }}>
                 {formatDateTime(item?.datetime?.seconds * 1000)}
               </span>
             </div>

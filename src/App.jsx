@@ -66,8 +66,8 @@ function App() {
       } else {
         enableDarkMode({
           brightness: 100,
-          contrast: 90,
-          sepia: 10,
+          contrast: 100,
+          sepia: 0,
         });
       }
 
