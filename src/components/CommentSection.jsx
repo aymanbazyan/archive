@@ -258,6 +258,9 @@ const CustomComment = ({ item, userName, postId }) => {
             // true
             <Button
               onClick={async () => {
+                const submit = confirm("Are you sure?");
+                if (!submit) return;
+
                 await deleteComment(postId, item.id);
 
                 // setComments((prevComments) =>

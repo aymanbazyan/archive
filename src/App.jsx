@@ -8,6 +8,7 @@ import { createGlobalStyle } from "styled-components";
 import {
   enable as enableDarkMode,
   disable as disableDarkMode,
+  setFetchMethod,
 } from "darkreader";
 
 const MainMenu = lazy(() => import("./components/MainMenu"));
@@ -64,6 +65,7 @@ function App() {
       if (theme === "light") {
         disableDarkMode();
       } else {
+        setFetchMethod(window.fetch); // Set fetch method for Darkreader
         enableDarkMode({
           brightness: 100,
           contrast: 100,

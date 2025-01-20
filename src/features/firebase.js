@@ -27,6 +27,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const postsRef = collection(db, "posts");
 const commentsRef = collection(db, "comments");
+const notifyRef = collection(db, "notifyAdmin");
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 
@@ -70,6 +71,7 @@ async function fetchSubData(postId, limitNum) {
 
 async function postComment(postId, dataObj) {
   await setDoc(doc(commentsRef, postId, "comments", dataObj.id), dataObj);
+  await setDoc(doc(notifyRef, dataObj.id), { ...dataObj, postId });
 }
 
 async function deleteComment(postId, itemId) {
