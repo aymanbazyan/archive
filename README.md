@@ -10,7 +10,7 @@ service cloud.firestore {
     match /posts/{postId} {
       // Only the admin can write; everyone can read
       allow read: if true;
-      allow write: if request.auth != null && request.auth.uid == 'ADMIN1234';
+      allow write: if request.auth != null && request.auth.uid == 'ADMIN_UID1234';
     }
 
     // Rule for comments/{postId}/comments/{commentId}
@@ -28,7 +28,13 @@ service cloud.firestore {
         && request.resource.data.author == request.auth.token.email.split('@')[0]
         && request.resource.data.avatar == request.auth.token.picture
         && request.resource.data.userId == request.auth.uid;
-      allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow delete: if request.auth != null && (request.auth.uid == resource.data.userId || request.auth.uid == 'ADMIN_UID1234');
+    }
+    
+     match /notifyAdmin/{postId} {
+      // Only the admin can write; everyone can read
+      allow read: if request.auth.uid == 'ADMIN_UID1234'
+      allow write: if request.auth != null;
     }
   }
 }
@@ -47,6 +53,7 @@ function validateComment(data) {
     && data.userId is string
     && data.userId.size() > 0 && data.userId.size() <= 50;
 }
+
 
 ```
 
