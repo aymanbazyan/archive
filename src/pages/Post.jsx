@@ -6,7 +6,7 @@ import Loading from "../components/Loading";
 import styled from "styled-components";
 import {
   aCode,
-  getPostContent,
+  getElementContent,
   getFromLocal,
   isTextStartsWithArabic,
   saveToLocal,
@@ -130,7 +130,9 @@ const Post = () => {
             icon={<Icon icon="ph:copy" />}
             title={t("post.copy")}
             onClick={() => {
-              const postContent = getPostContent();
+              const postContent = getElementContent(
+                document.querySelector(".ck-content")
+              );
 
               const toCopy = `${window.location.origin}${window.location.pathname} \n\n ${decryptedTitle} \n\n ${postContent}`;
               navigator.clipboard.writeText(toCopy);
@@ -191,9 +193,9 @@ const Post = () => {
           {t("post.author")}: <strong>{aCode(post.author, false)}</strong>
         </p>
 
-        <Button type="primary">
-          <Link to={`/archive`}>{t("post.return")}</Link>
-        </Button>
+        <Link to={`/archive`}>
+          <Button type="primary">{t("post.return")}</Button>
+        </Link>
       </Card>
       <Divider />
       <CommentSection postId={post.id} />

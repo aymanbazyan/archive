@@ -2,6 +2,7 @@ import { Button, Card, Col, Typography } from "antd";
 import {
   aCode,
   getFromLocal,
+  htmlToNode,
   isTextStartsWithArabic,
   saveToLocal,
   toggleSave,
@@ -19,6 +20,7 @@ import styled from "styled-components";
 import { useTranslation } from "react-i18next";
 
 const StyledTitle = styled.div`
+  padding: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -34,6 +36,7 @@ const StyledFoot = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto;
 
   & button {
     margin: 0 !important;
@@ -80,60 +83,112 @@ const ArchiveBox = memo(function ({ index, setStopRendering }) {
   );
 
   const [isBookmarked, setIsBookmarked] = useState(
-    // getFromLocal("bookmarks")?.some((bookId) => post?.id == bookId)
     getFromLocal("bookmarks")?.[post?.id]
   );
 
   if (isLoading) return <Loading />;
   if (!post) return null;
-  // console.log(post);
-  const bodyShowcase = aCode(post.bodies[i.language], false).slice(
-    0,
-    POST_SHOWCASE_LENGTH
-  );
+
+  const bodyShowcase = htmlToNode(
+    `<div>${aCode(post.bodies[i.language], false)}</div>`
+  )
+    .textContent.slice(60, POST_SHOWCASE_LENGTH)
+    .replaceAll("&nbsp;", " ");
 
   return (
-    <Col id={`post${post.id}`}>
+    <Col id={`post${post.id}`} style={{ marginBottom: "24px", padding: 0 }}>
       <Card
         title={
           <StyledTitle>
-            {aCode(post.titles[i.language], false)}
-
-            <Button
-              onClick={() => toggleSave(post.id, setIsBookmarked)}
-              shape="circle"
-              icon={
-                <Icon
-                  icon={
-                    isBookmarked ? "tabler:bookmark-filled" : "tabler:bookmark"
-                  }
-                />
-              }
-            />
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span style={{ fontSize: "16px", fontWeight: "600" }}>
+                {aCode(post.titles[i.language], false)}
+              </span>
+              <Button
+                onClick={() => toggleSave(post.id, setIsBookmarked)}
+                shape="circle"
+                icon={
+                  <Icon
+                    icon={
+                      isBookmarked
+                        ? "tabler:bookmark-filled"
+                        : "tabler:bookmark"
+                    }
+                    style={{ color: isBookmarked ? "#1890ff" : "#000" }}
+                  />
+                }
+              />
+            </div>
           </StyledTitle>
         }
-        bordered={false}
+        bordered={true}
+        style={{
+          height: "100%",
+          borderRadius: "8px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+          transition: "box-shadow 0.3s ease",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        headStyle={{ padding: "12px" }}
+        bodyStyle={{
+          padding: "12px",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
         <p
           style={{
             direction: isTextStartsWithArabic(bodyShowcase) ? "rtl" : "ltr",
+            fontSize: "14px",
+            color: "#555",
+            lineHeight: "1.6",
+            marginBottom: "16px",
+            flex: 1,
           }}
         >
-          {bodyShowcase.replace(/<\/?[^>]+(>|$)/g, "")}...
-        </p>
-        <p>
-          {t("archive.box.author")}:{" "}
-          <strong>{aCode(post.author, false)}</strong>
+          ...{bodyShowcase.replace(/<\/?[^>]+(>|$)/g, "")}...
         </p>
 
-        <StyledFoot>
-          <Link to={`/archive/${post.id}`}>
-            <Button type="primary">{t("archive.box.show")}</Button>
-          </Link>
-          <Typography.Text style={{ wordBreak: "keep-all" }} mark>
-            {post.id}
-          </Typography.Text>
-        </StyledFoot>
+        <div style={{ marginTop: "auto" }}>
+          <p
+            style={{
+              fontSize: "14px",
+              color: "#777",
+              margin: "10px 0",
+            }}
+          >
+            {t("archive.box.author")}:{" "}
+            <strong style={{ color: "#333" }}>
+              {aCode(post.author, false)}
+            </strong>
+          </p>
+
+          <StyledFoot>
+            <Link to={`/archive/${post.id}`}>
+              <Button type="primary">{t("archive.box.show")}</Button>
+            </Link>
+            <Typography.Text
+              style={{
+                wordBreak: "keep-all",
+                color: "#999",
+                fontSize: "12px",
+                fontWeight: "500",
+              }}
+              mark
+            >
+              #{post.id}
+            </Typography.Text>
+          </StyledFoot>
+        </div>
       </Card>
     </Col>
   );
