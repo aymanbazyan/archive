@@ -64,7 +64,7 @@ const MainMenu = ({ setTheme, theme }) => {
       label: (
         <Icon
           style={{
-            padding: ".5rem 0",
+            padding: ".5rem",
             display: "flex",
             alignContent: "center",
             justifyContent: "center",
