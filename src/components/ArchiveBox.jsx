@@ -89,11 +89,17 @@ const ArchiveBox = memo(function ({ index, setStopRendering }) {
   if (isLoading) return <Loading />;
   if (!post) return null;
 
-  const bodyShowcase = htmlToNode(
-    `<div>${aCode(post.bodies[i.language], false)}</div>`
-  )
-    .textContent.slice(60, POST_SHOWCASE_LENGTH)
-    .replaceAll("&nbsp;", " ");
+  let decTitle = aCode(post.titles[i.language], false);
+  let decBodyNodes = htmlToNode(aCode(post.bodies[i.language], false));
+  let decBodyText;
+  decBodyNodes.forEach((node) => {
+    if (node.textContent.trim().length >= POST_SHOWCASE_LENGTH) {
+      decBodyText = node.textContent.trim().slice(0, POST_SHOWCASE_LENGTH);
+      return;
+    }
+  });
+  if (!decBodyText) decBodyText = decTitle;
+  // const bodyShowcase = `<div>${}</div>`;
 
   return (
     <Col id={`post${post.id}`} style={{ marginBottom: "24px", padding: 0 }}>
@@ -106,10 +112,11 @@ const ArchiveBox = memo(function ({ index, setStopRendering }) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
+                gap: ".5rem",
               }}
             >
               <span style={{ fontSize: "16px", fontWeight: "600" }}>
-                {aCode(post.titles[i.language], false)}
+                {decTitle}
               </span>
               <Button
                 onClick={() => toggleSave(post.id, setIsBookmarked)}
@@ -137,17 +144,19 @@ const ArchiveBox = memo(function ({ index, setStopRendering }) {
           display: "flex",
           flexDirection: "column",
         }}
-        headStyle={{ padding: "12px" }}
-        bodyStyle={{
-          padding: "12px",
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
+        styles={{
+          header: { padding: "12px" },
+          body: {
+            padding: "12px",
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+          },
         }}
       >
         <p
           style={{
-            direction: isTextStartsWithArabic(bodyShowcase) ? "rtl" : "ltr",
+            direction: isTextStartsWithArabic(decBodyText) ? "rtl" : "ltr",
             fontSize: "14px",
             color: "#555",
             lineHeight: "1.6",
@@ -155,7 +164,7 @@ const ArchiveBox = memo(function ({ index, setStopRendering }) {
             flex: 1,
           }}
         >
-          ...{bodyShowcase.replace(/<\/?[^>]+(>|$)/g, "")}...
+          <div>{decBodyText.replace(/<\/?[^>]+(>|$)/g, "")}...</div>
         </p>
 
         <div style={{ marginTop: "auto" }}>

@@ -1,10 +1,9 @@
 import { Suspense, lazy, useEffect, useState } from "react";
-import { Layout } from "antd";
-const { Header } = Layout;
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
 import Loading from "./components/Loading";
-import { DEFAULT_POSTS_NUM } from "./helpers/config";
+import { DEFAULT_POSTS_NUM, LANGUAGES } from "./helpers/config";
 import { createGlobalStyle } from "styled-components";
+import { getFromLocal, saveToLocal } from "./helpers/helpers";
 import {
   enable as enableDarkMode,
   disable as disableDarkMode,
@@ -18,33 +17,39 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Post = lazy(() => import("./pages/Post"));
 const Home = lazy(() => import("./pages/Home"));
 const Bookmarks = lazy(() => import("./pages/Bookmarks"));
+import AppWrapper from "./components/AppWrapper";
 import Footer from "./components/Footer";
+
+import i18next from "i18next";
+import { I18nextProvider } from "react-i18next";
 
 import global_en from "./translations/en/global.json";
 import global_ar from "./translations/ar/global.json";
-import i18next from "i18next";
-import { I18nextProvider } from "react-i18next";
-import { getFromLocal, saveToLocal } from "./helpers/helpers";
-import AppWrapper from "./components/AppWrapper";
+const globalTranslations = {
+  ar: global_ar,
+  en: global_en,
+};
 
 let userLang = getFromLocal("lang");
-if (!userLang) {
-  let newLang =
-    navigator.language || navigator.userLanguage.slice(0, 2).toLowerCase();
-  saveToLocal("lang", newLang);
-  userLang = newLang;
-}
 
-if (userLang !== "en" && userLang !== "ar") {
+if (!userLang) {
   const newLang = "en";
   saveToLocal("lang", newLang);
   userLang = newLang;
 }
 
+const languagesObj = {};
+LANGUAGES.map(
+  (lan) =>
+    (languagesObj[lan.key] = {
+      global: globalTranslations[lan.key] || global_en,
+    })
+);
+
 i18next.init({
   interpolation: { escapeValue: false },
   lng: userLang,
-  resources: { en: { global: global_en }, ar: { global: global_ar } },
+  resources: languagesObj, //{ en: { global: global_en }, ar: { global: global_ar } },
 });
 
 const UniversalStyle = createGlobalStyle`
@@ -85,18 +90,18 @@ function App() {
         <Suspense fallback={<Loading />}>
           <AppWrapper>
             <div>
-              <Header>
-                <MainMenu theme={theme} setTheme={setTheme} />
-              </Header>
+              <MainMenu theme={theme} setTheme={setTheme} />
               <Routes>
-                <Route index element={<Home />} />
+                <Route path="/home" element={<Home />} />
 
+                <Route path="/" element={<Navigate to={"/archive"} />} />
                 <Route
                   path="/archive"
                   element={
                     <Archive loadNum={loadNum} setLoadNum={setLoadNum} />
                   }
                 />
+
                 <Route path="/archive/:id" element={<Post />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />

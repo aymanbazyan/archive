@@ -3,8 +3,7 @@ const a2e = (s) => s.replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d
 const symbolRejex = /[a-zA-Z\u0600-\u06FF\u0750-\u077F\u0590-\u05FF]/;
 
 function isTextStartsWithArabic(text) {
-  if (!text) return;
-
+  if (typeof text !== "string" || !text) return;
   const newText = text.replace(/<\/?[^>]+(>|$)/g, "");
 
   // Convert arabic numbers to english
@@ -118,16 +117,7 @@ const formatDateTime = (date) => {
 function htmlToNode(html) {
   const template = document.createElement("template");
   template.innerHTML = html;
-  const nNodes = template.content.childNodes.length;
-  if (nNodes !== 1) {
-    throw new Error(
-      `html parameter must represent a single node; got ${nNodes}. ` +
-        "Note that leading or trailing spaces around an element in your " +
-        'HTML, like " <img/> ", get parsed as text nodes neighbouring ' +
-        "the element; call .trim() on your input to avoid this."
-    );
-  }
-  return template.content.firstChild;
+  return template.content.childNodes;
 }
 
 export {
@@ -139,5 +129,4 @@ export {
   toggleSave,
   isTextStartsWithArabic,
   formatDateTime,
-  // mergeCommonObjects,
 };
