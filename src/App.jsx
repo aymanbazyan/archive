@@ -25,6 +25,7 @@ import { I18nextProvider } from "react-i18next";
 
 import global_en from "./translations/en/global.json";
 import global_ar from "./translations/ar/global.json";
+import ReadingBar from "./components/ReadingBar";
 const globalTranslations = {
   ar: global_ar,
   en: global_en,
@@ -102,7 +103,15 @@ function App() {
                   }
                 />
 
-                <Route path="/archive/:id" element={<Post />} />
+                <Route
+                  path="/archive/:id"
+                  element={
+                    <>
+                      <ReadingBar />
+                      <Post />
+                    </>
+                  }
+                />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/bookmarks" element={<Bookmarks />} />
 
