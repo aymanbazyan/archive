@@ -1,0 +1,98 @@
+:root {
+    --ck-highlight-marker-yellow: #fdfd77;
+    --ck-highlight-marker-green: #62f962;
+    --ck-highlight-marker-pink: #fc7899;
+    --ck-highlight-marker-blue: #72ccfd;
+    --ck-highlight-pen-red: #e71313;
+    --ck-highlight-pen-green: #128a00;
+}
+
+.ck-content .marker-yellow {
+    background-color: var(--ck-highlight-marker-yellow)
+}
+
+.ck-content .marker-green {
+    background-color: var(--ck-highlight-marker-green)
+}
+
+.ck-content .marker-pink {
+    background-color: var(--ck-highlight-marker-pink)
+}
+
+.ck-content .marker-blue {
+    background-color: var(--ck-highlight-marker-blue)
+}
+
+.ck-content .pen-red {
+    background-color: transparent;
+    color: var(--ck-highlight-pen-red)
+}
+
+.ck-content .pen-green {
+    background-color: transparent;
+    color: var(--ck-highlight-pen-green)
+}
+
+.ck-content img {
+    width: 100% !important;
+    max-width: 30rem !important;
+    height: auto;
+}
+
+.ck-content hr {
+    margin: 15px 0;
+    height: 4px;
+    background: hsl(0, 0%, 87%);
+    border: 0;
+}
+
+.ck-content blockquote {
+    overflow: hidden;
+    padding-right: 1.5em;
+    padding-left: 1.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    border-left: solid 5px hsl(0, 0%, 80%);
+    border-right: solid 5px hsl(0, 0%, 80%);
+}
+
+.ck-content u {
+    text-decoration: underline solid 2px;
+}
+
+.ck-content code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.ck-content strong {
+    font-weight: 650;
+}
+
+.ck-content pre.fancy-code {
+  border: 0;
+  margin-left: 2em;
+  margin-right: 2em;
+  border-radius: 10px;
+}
+
+.ck-content pre.fancy-code::before {
+  content: '';
+  display: block;
+  height: 13px;
+  background: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NCAxMyI+CiAgPGNpcmNsZSBjeD0iNi41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiNGMzZCNUMiLz4KICA8Y2lyY2xlIGN4PSIyNi41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiNGOUJFNEQiLz4KICA8Y2lyY2xlIGN4PSI0Ny41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiM1NkM0NTMiLz4KPC9zdmc+Cg==);
+  margin-bottom: 8px;
+  background-repeat: no-repeat;
+}
+
+.ck-content pre.fancy-code-dark {
+  background: #272822;
+  color: #fff;
+  box-shadow: 5px 5px 0 #0000001f;
+}
+
+.ck-content pre.fancy-code-bright {
+  background: #dddfe0;
+  color: #000;
+  box-shadow: 5px 5px 0 #b3b3b3;
+}

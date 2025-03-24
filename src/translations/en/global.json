@@ -1,0 +1,61 @@
+{
+  "notFound": {
+    "title": "Something went wrong.",
+    "link": "Homepage"
+  },
+  "header": {
+    "main": "Home",
+    "archive": "Archive",
+    "bookmarks": "Bookmarks",
+    "contact": "Contact",
+    "changeLang": "Change website's language"
+  },
+  "home": {
+    "title": "Welcome to the Al'arshif",
+    "head": "In the name of God, the most gracious, the most merciful",
+    "body": "This site is a personal site that I use to store some quick responses to some doubts in Islam. There may be some errors and I may edit some topics later, and God knows best."
+  },
+  "archive": {
+    "searchHolder": "Search here",
+    "loadMore": "Load more",
+    "searchResult": "Search results",
+    "vpnWarning": "Attention: Brothers from Syria, Iran and others will not see the archive without",
+    "box": {
+      "author": "Author",
+      "show": "Read"
+    }
+  },
+  "post": {
+    "return": "Return",
+    "author": "Author",
+    "id": "Post ID",
+    "copy": "Copy",
+    "link": "Copy link",
+    "bookmark": "Bookmark post",
+    "invalidId": "Invalid ID",
+    "changeLang": "Change post's language"
+  },
+  "bookmarks": {
+    "messageSaved": "Bookmarked posts"
+  },
+  "contact": {
+    "messageUnavailable": "Unavailable"
+  },
+  "footer": {
+    "message": "Exalted is Allah"
+  },
+  "comments": {
+    "title": "Comments",
+    "placeholder": "Write a comment...",
+    "button": "Add Comment",
+    "mustSign": "You must login to comment",
+    "signed": "You're logged in as",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "footerOne": "comment",
+    "footerMany": "comments",
+    "footerNone": ", be the first to comment !",
+    "loadMore": "Load more",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  }
+}
