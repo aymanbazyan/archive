@@ -11,9 +11,9 @@
     "changeLang": "Change website's language"
   },
   "home": {
-    "title": "Welcome to the Al'arshif",
-    "head": "In the name of God, the most gracious, the most merciful",
-    "body": "This site is a personal site that I use to store some quick responses to some doubts in Islam. There may be some errors and I may edit some topics later, and God knows best."
+    "title": "Welcome to My Blog",
+    "head": "Thoughts, stories and ideas",
+    "body": "This is my personal blog where I share my thoughts on various topics. I may update posts occasionally as my perspectives evolve."
   },
   "archive": {
     "searchHolder": "Search here",
@@ -42,7 +42,7 @@
     "messageUnavailable": "Unavailable"
   },
   "footer": {
-    "message": "Exalted is Allah"
+    "message": "Thanks for visiting"
   },
   "comments": {
     "title": "Comments",
