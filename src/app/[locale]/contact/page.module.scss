@@ -1,0 +1,19 @@
+.list {
+  list-style: none;
+
+  & svg {
+    font-size: 1.8rem;
+  }
+
+  & a {
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: fit-content;
+  }
+
+  & img {
+    width: 150px;
+  }
+}

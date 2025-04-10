@@ -1,0 +1,65 @@
+{
+  "notFound": {
+    "title": "Something went wrong.",
+    "link": "Homepage"
+  },
+  "header": {
+    "main": "Home",
+    "archive": "Archive",
+    "bookmarks": "Bookmarks",
+    "contact": "Contact",
+    "changeLang": "Change language"
+  },
+  "home": {
+    "title": "Welcome to The Archive",
+    "head": "Welcome to my personal blog",
+    "body": "This is my digital space for sharing thoughts and perspectives on various topics. Articles may be updated over time as I refine my ideas, and I welcome constructive discussions in the comments."
+  },
+  "archive": {
+    "searchHolder": "Search articles",
+    "searchResult": "Search results",
+    "box": {
+      "author": "Author",
+      "show": "Read"
+    },
+    "loadMore": "Load more",
+    "loading": "Loading...",
+    "noMorePosts": "No more articles to load."
+  },
+  "post": {
+    "return": "Back",
+    "author": "Author",
+    "id": "Post ID",
+    "copy": "Copy",
+    "link": "Share",
+    "bookmark": "Save post",
+    "invalidId": "Invalid post ID",
+    "changeLang": "Translate post"
+  },
+  "bookmarks": {
+    "messageSaved": "Saved posts",
+    "loading": "Loading saved posts...",
+    "post": "Post",
+    "removed": "removed from saved posts"
+  },
+  "contact": {
+    "messageUnavailable": "Contact form currently unavailable"
+  },
+  "footer": {
+    "message": "Stay curious"
+  },
+  "comments": {
+    "title": "Discussion",
+    "placeholder": "Join the conversation...",
+    "button": "Post comment",
+    "mustSign": "Sign in to comment",
+    "signed": "Logged in as",
+    "logoutConfirm": "Log out now?",
+    "footerOne": "comment",
+    "footerMany": "comments",
+    "footerNone": ", start the discussion!",
+    "loadMore": "Load more",
+    "showMore": "Expand comments",
+    "showLess": "Collapse comments"
+  }
+}

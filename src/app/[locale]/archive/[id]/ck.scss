@@ -1,0 +1,71 @@
+.ck-content {
+  --ck-highlight-marker-yellow: #fdfd77;
+  --ck-highlight-marker-green: #62f962;
+  --ck-highlight-marker-pink: #fc7899;
+  --ck-highlight-marker-blue: #72ccfd;
+  --ck-highlight-pen-red: #e71313;
+  --ck-highlight-pen-green: #128a00;
+
+  & .marker-yellow {
+    background-color: var(--ck-highlight-marker-yellow);
+  }
+
+  & .marker-green {
+    background-color: var(--ck-highlight-marker-green);
+  }
+
+  & .marker-pink {
+    background-color: var(--ck-highlight-marker-pink);
+  }
+
+  & .marker-blue {
+    background-color: var(--ck-highlight-marker-blue);
+  }
+
+  & .pen-red {
+    background-color: transparent;
+    color: var(--ck-highlight-pen-red);
+  }
+
+  & .pen-green {
+    background-color: transparent;
+    color: var(--ck-highlight-pen-green);
+  }
+
+  & img {
+    width: 100% !important;
+    max-width: 30rem !important;
+    height: auto;
+  }
+
+  & hr {
+    margin: 15px 0;
+    height: 4px;
+    background: hsl(0, 0%, 87%);
+    border: 0;
+  }
+
+  & blockquote {
+    overflow: hidden;
+    padding-right: 1.5em;
+    padding-left: 1.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    border-left: solid 5px hsl(0, 0%, 80%);
+    border-right: solid 5px hsl(0, 0%, 80%);
+  }
+
+  & u {
+    text-decoration: underline solid 2px;
+  }
+
+  & code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+  }
+
+  & strong {
+    font-weight: 650;
+  }
+}
