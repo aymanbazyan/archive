@@ -3,6 +3,7 @@ import MainHeader from "@/components/other-comps/main-header";
 import MainFooter from "@/components/other-comps/main-footer";
 import { NextIntlClientProvider } from "next-intl";
 import { metadata } from "@/helpers/config";
+import "@ant-design/v5-patch-for-react-19";
 
 export async function generateMetadata({ params }) {
   const lang = (await params).locale;

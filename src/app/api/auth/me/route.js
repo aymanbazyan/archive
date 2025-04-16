@@ -1,23 +1,20 @@
-import { NextResponse } from "next/server";
-import supabase from "@/lib/supabase";
+import { getUserFromToken } from "@/lib/auth";
 
-export async function GET(request) {
-  const accessToken = request.cookies.get("sb-access-token")?.value;
-  const refreshToken = request.cookies.get("sb-refresh-token")?.value;
+async function GET(req) {
+  const authHeader = req.headers.get("Authorization");
 
-  if (!accessToken || !refreshToken) {
-    return NextResponse.json({ user: null });
-  }
-
-  try {
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser(accessToken);
-    if (error) throw error;
-
-    return NextResponse.json({ user });
-  } catch (error) {
-    return NextResponse.json({ user: null });
+  if (authHeader) {
+    const token = authHeader.split(" ")[1]; // Assuming the token is in the format "Bearer <token>"
+    const res = await getUserFromToken(token);
+    console.log(res?.user);
+    if (res?.user) return Response.json(res.user);
+    else
+      return new Response(JSON.stringify({ error: "Something went wrong" }), {
+        status: 500,
+      });
+  } else {
+    console.log("Authorization header is missing");
   }
 }
+
+export { GET };

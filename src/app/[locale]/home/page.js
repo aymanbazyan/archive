@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import styles from "./page.module.scss";
-//import { seedFakePosts } from "@/lib/seedFakePosts";
 
 function HomePage() {
   const t = useTranslations("home");

@@ -3,8 +3,8 @@ import { useTranslations } from "next-intl";
 import styles from "./page.module.scss";
 import { facebookLink, LOGO_URL, telegramLink } from "@/helpers/config";
 import Image from "next/image";
-import CommentSection from "@/components/other-comps/comments-section";
-import { Suspense } from "react";
+// import CommentSection from "@/components/other-comps/comments-section";
+// import { Suspense } from "react";
 
 function ContactPage() {
   const t = useTranslations("contact");
@@ -26,9 +26,9 @@ function ContactPage() {
         </li>
 
         <Image src={LOGO_URL} width={200} height={120} alt="logo" />
-        <Suspense fallback={<p>...</p>}>
+        {/* <Suspense fallback={<p>...</p>}>
           <CommentSection postId="general" />
-        </Suspense>
+        </Suspense> */}
       </ul>
 
       {/* to do

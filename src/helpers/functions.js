@@ -59,16 +59,80 @@ function toggleSave(id, setIsBookmarked) {
   }
 }
 
-const formatDateTime = (date) => {
-  if (!date) return;
-  const options = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  };
-  return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
+// const formatDateTime = (date) => {
+//   if (!date) return;
+//   const options = {
+//     year: "numeric",
+//     month: "short",
+//     day: "numeric",
+//     hour: "2-digit",
+//     minute: "2-digit",
+//   };
+//   return new Intl.DateTimeFormat("en-US", options).format(new Date(date));
+// };
+
+const getElementContent = (doc) => {
+  if (!doc) return "";
+
+  const links = doc.querySelectorAll("a"); // Get all <a> elements inside the div
+  links.forEach((link) => {
+    const newElement = document.createElement("span"); // Create a replacement element
+    newElement.textContent = `${link.textContent} [${link.href}]`; // Transfer the text
+    link.replaceWith(newElement); // Replace <a> with the new element
+  });
+
+  const imgs = doc.querySelectorAll("img");
+  imgs.forEach((img) => {
+    const newElement = document.createElement("span");
+    newElement.textContent = `(${img.alt || "File preview"}) [${img.src}]`;
+    img.replaceWith(newElement);
+  });
+
+  const spaces = doc.querySelectorAll("p");
+  spaces.forEach((space) => {
+    if (space.textContent === " ") {
+      const newElement = document.createElement("p");
+      newElement.textContent = "\n";
+      space.replaceWith(newElement);
+    }
+  });
+
+  const hrs = doc.querySelectorAll("hr");
+  hrs.forEach((hr) => {
+    const newElement = document.createElement("p");
+    newElement.textContent = "---------";
+    hr.replaceWith(newElement);
+  });
+
+  return doc.innerText;
 };
 
-export { isTextStartsWithArabic, toggleSave, getFromLocal, formatDateTime };
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function deleteCookie(cname) {
+  document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
+
+export {
+  isTextStartsWithArabic,
+  toggleSave,
+  getFromLocal,
+  getElementContent,
+  getCookie,
+  deleteCookie,
+  // formatDateTime
+};

@@ -1,0 +1,147 @@
+// app/admin/login/login.module.scss
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 1rem;
+}
+
+.loginCard {
+  width: 100%;
+  max-width: 420px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    color: #111827;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+}
+
+.passwordHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgotPassword {
+  font-size: 0.75rem;
+  color: #2563eb;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.input {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+}
+
+.loginButton {
+  background-color: #2563eb;
+  color: white;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background-color: #1d4ed8;
+  }
+
+  &:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+  }
+}
+
+.errorMessage {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 4px solid #ef4444;
+  font-size: 0.875rem;
+}
+
+.securityInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  color: #6b7280;
+  font-size: 0.75rem;
+
+  .securityIcon {
+    color: #10b981;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+// Adding some responsive adjustments
+@media (max-width: 480px) {
+  .loginCard {
+    padding: 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.25rem;
+  }
+}

@@ -6,21 +6,6 @@ import supabase from "@/lib/supabase";
 // import { seedFakePosts } from "./seedFakePosts";
 // seedFakePosts();
 
-export async function createPost(post) {
-  const { data, error } = await supabase
-    .from("postsb")
-    .insert({
-      id: post.id,
-      author: post.author,
-      titles: post.titles, // Stored as JSONB in PostgreSQL
-      bodies: post.bodies, // Stored as JSONB in PostgreSQL
-    })
-    .select();
-
-  if (error) throw error;
-  return data[0];
-}
-
 export async function getPost(id) {
   const { data, error } = await supabase
     .from("postsb")

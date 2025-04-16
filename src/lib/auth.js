@@ -1,32 +1,53 @@
 import supabase from "./supabase";
 
-// async function signInWithGoogle(redirectUrl) {
-//   const { data, error } = await supabase.auth.signInWithOAuth({
-//     provider: "google",
-//     options: {
-//       redirectTo: redirectUrl,
-//     },
-//   });
-//   if (error) {
-//     console.error("Error signing in with Google:", error);
-//     return null;
-//   }
-//   return data;
-// }
-
-async function signInWithGoogle() {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
-      queryParams: {
-        access_type: "offline",
-        prompt: "consent",
-      },
+async function signInWithPassword(email, password) {
+  let { data, error } = await supabase.auth.signInWithPassword(
+    {
+      email,
+      password,
     },
-  });
+    {
+      expiresIn: 604800, // 7 days in seconds
+    }
+  );
 
   return data;
 }
 
-export { signInWithGoogle };
+/**
+ * Gets the user object from a Supabase JWT token
+ * @param {string} token - The JWT token to validate
+ * @returns {Promise<Object>} - The user object or error
+ */
+async function getUserFromToken(token) {
+  try {
+    // Get the user from the token
+    const { data, error } = await supabase.auth.getUser(token);
+
+    if (error) {
+      return {
+        success: false,
+        error: error.message,
+        status: 401,
+      };
+    }
+
+    return {
+      success: true,
+      user: data.user,
+      status: 200,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message || "Unknown error occurred",
+      status: 500,
+    };
+  }
+}
+
+export {
+  signInWithPassword,
+  // authMe,
+  getUserFromToken,
+};

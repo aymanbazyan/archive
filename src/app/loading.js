@@ -2,15 +2,19 @@ import { Spin } from "antd";
 
 function Loading() {
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-      }}
-    >
-      <Spin size="large"></Spin>
-    </div>
+    <html>
+      <body>
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+          }}
+        >
+          <Spin size="large"></Spin>
+        </div>
+      </body>
+    </html>
   );
 }
 

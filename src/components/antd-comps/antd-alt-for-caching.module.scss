@@ -1,0 +1,542 @@
+// Variables - Enhanced Color System
+$primary-color: #1677ff;
+$primary-hover: #4096ff;
+$primary-active: #096dd9;
+$primary-outline: rgba(24, 144, 255, 0.2);
+
+$success-color: #52c41a;
+$success-hover: #73d13d;
+$success-active: #389e0d;
+$success-outline: rgba(82, 196, 26, 0.2);
+
+$warning-color: #faad14;
+$warning-hover: #ffc53d;
+$warning-active: #d48806;
+$warning-outline: rgba(250, 173, 20, 0.2);
+
+$error-color: #f5222d;
+$error-hover: #ff4d4f;
+$error-active: #cf1322;
+$error-outline: rgba(245, 34, 45, 0.2);
+
+// Base variables - Improved for consistency
+$font-size-base: 14px;
+$border-radius-base: 4px; // Increased for modern look
+$border-radius-card: 8px; // Enhanced card border radius
+$border-color-base: #d9d9d9;
+$heading-color: rgba(0, 0, 0, 0.85);
+$text-color: rgb(0, 0, 0);
+$disabled-color: rgba(0, 0, 0, 0.25);
+$disabled-bg: #f5f5f5;
+
+// Elevation system - More consistent shadows
+$shadow-1: 0 1px 2px rgba(0, 0, 0, 0.06);
+$shadow-2: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px rgba(0, 0, 0, 0.08);
+$shadow-3: 0 6px 16px -8px rgba(0, 0, 0, 0.16), 0 9px 28px rgba(0, 0, 0, 0.09);
+
+// Button component
+.alt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500; // Slightly bolder font weight
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  // Base button styles
+  height: 32px;
+  padding: 4px 16px; // Slightly more padding
+  font-size: $font-size-base;
+  border-radius: $border-radius-base;
+  color: $text-color;
+  background-color: #fff;
+  border-color: $border-color-base;
+  box-shadow: $shadow-1;
+
+  // Improved transition for all properties
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  touch-action: manipulation;
+
+  // Icon styling - Enhanced spacing
+  &-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+
+    & + span {
+      margin-left: 8px;
+    }
+  }
+
+  // Icon only button - Better proportions
+  &-icon-only {
+    width: 32px;
+    padding: 0;
+
+    &.alt-btn-large {
+      width: 40px;
+    }
+
+    &.alt-btn-small {
+      width: 24px;
+    }
+  }
+
+  // Circle shape
+  &-circle {
+    min-width: 32px;
+    padding: 0;
+    border-radius: 50%;
+
+    &.alt-btn-large {
+      min-width: 40px;
+      height: 40px;
+    }
+
+    &.alt-btn-small {
+      min-width: 24px;
+      height: 24px;
+    }
+  }
+
+  // Default button hover states
+  &:hover {
+    color: $primary-hover;
+    border-color: $primary-hover;
+    background-color: #fff;
+    box-shadow: $shadow-2;
+  }
+
+  &:focus {
+    color: $primary-hover;
+    border-color: $primary-hover;
+    background-color: #fff;
+    box-shadow: $shadow-1, 0 0 0 2px $primary-outline;
+    outline: none;
+  }
+
+  &:active {
+    color: $primary-active;
+    border-color: $primary-active;
+    background-color: #fff;
+    box-shadow: $shadow-1;
+  }
+
+  // Button variants with improved interactive states
+  &-primary {
+    color: #fff;
+    background-color: $primary-color;
+    border-color: $primary-color;
+
+    &:hover {
+      color: #fff;
+      background-color: $primary-hover;
+      border-color: $primary-hover;
+      box-shadow: $shadow-2;
+    }
+
+    &:focus {
+      color: #fff;
+      background-color: $primary-hover;
+      border-color: $primary-hover;
+      box-shadow: $shadow-1, 0 0 0 2px $primary-outline;
+      outline: none;
+    }
+
+    &:active {
+      color: #fff;
+      background-color: $primary-active;
+      border-color: $primary-active;
+      box-shadow: $shadow-1;
+    }
+  }
+
+  &-success {
+    color: #fff;
+    background-color: $success-color;
+    border-color: $success-color;
+
+    &:hover {
+      color: #fff;
+      background-color: $success-hover;
+      border-color: $success-hover;
+      box-shadow: $shadow-2;
+    }
+
+    &:focus {
+      color: #fff;
+      background-color: $success-hover;
+      border-color: $success-hover;
+      box-shadow: $shadow-1, 0 0 0 2px $success-outline;
+      outline: none;
+    }
+
+    &:active {
+      color: #fff;
+      background-color: $success-active;
+      border-color: $success-active;
+      box-shadow: $shadow-1;
+    }
+  }
+
+  &-warning {
+    color: #fff;
+    background-color: $warning-color;
+    border-color: $warning-color;
+
+    &:hover {
+      color: #fff;
+      background-color: $warning-hover;
+      border-color: $warning-hover;
+      box-shadow: $shadow-2;
+    }
+
+    &:focus {
+      color: #fff;
+      background-color: $warning-hover;
+      border-color: $warning-hover;
+      box-shadow: $shadow-1, 0 0 0 2px $warning-outline;
+      outline: none;
+    }
+
+    &:active {
+      color: #fff;
+      background-color: $warning-active;
+      border-color: $warning-active;
+      box-shadow: $shadow-1;
+    }
+  }
+
+  &-danger {
+    color: #fff;
+    background-color: $error-color;
+    border-color: $error-color;
+
+    &:hover {
+      color: #fff;
+      background-color: $error-hover;
+      border-color: $error-hover;
+      box-shadow: $shadow-2;
+    }
+
+    &:focus {
+      color: #fff;
+      background-color: $error-hover;
+      border-color: $error-hover;
+      box-shadow: $shadow-1, 0 0 0 2px $error-outline;
+      outline: none;
+    }
+
+    &:active {
+      color: #fff;
+      background-color: $error-active;
+      border-color: $error-active;
+      box-shadow: $shadow-1;
+    }
+  }
+
+  // Ghost buttons
+  &-ghost {
+    color: $text-color;
+    background-color: transparent;
+    border-color: $border-color-base;
+    box-shadow: none;
+
+    &:hover {
+      color: $primary-hover;
+      background-color: rgba(0, 0, 0, 0.02);
+      border-color: $primary-hover;
+    }
+
+    &:focus {
+      color: $primary-hover;
+      background-color: transparent;
+      border-color: $primary-hover;
+      box-shadow: 0 0 0 2px $primary-outline;
+    }
+  }
+
+  // Link and text buttons - Enhanced
+  &-link {
+    color: $primary-color;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:hover {
+      color: $primary-hover;
+      background: transparent;
+      text-decoration: underline;
+      box-shadow: none;
+    }
+
+    &:focus {
+      color: $primary-hover;
+      background: transparent;
+      box-shadow: none;
+      text-decoration: underline;
+      outline: none;
+    }
+
+    &:active {
+      color: $primary-active;
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+
+  &-text {
+    color: $text-color;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+
+    &:hover {
+      color: $text-color;
+      background-color: rgba(0, 0, 0, 0.04);
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    &:focus {
+      color: $text-color;
+      background-color: rgba(0, 0, 0, 0.04);
+      border-color: transparent;
+      box-shadow: none;
+      outline: none;
+    }
+
+    &:active {
+      color: $text-color;
+      background-color: rgba(0, 0, 0, 0.08);
+      box-shadow: none;
+    }
+  }
+
+  // Size variants
+  &-large {
+    height: 40px;
+    padding: 6.4px 20px;
+    font-size: 16px;
+    border-radius: $border-radius-base;
+  }
+
+  &-small {
+    height: 24px;
+    padding: 0 8px;
+    font-size: 12px;
+    border-radius: $border-radius-base * 0.75; // Smaller border radius for small buttons
+  }
+
+  // Disabled state
+  &-disabled,
+  &[disabled] {
+    color: $disabled-color;
+    background-color: $disabled-bg;
+    border-color: $border-color-base;
+    text-shadow: none;
+    box-shadow: none;
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: $disabled-color;
+      background-color: $disabled-bg;
+      border-color: $border-color-base;
+      box-shadow: none;
+      text-decoration: none;
+    }
+  }
+
+  // Loading state
+  &-loading {
+    position: relative;
+    pointer-events: none;
+
+    &::before {
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      z-index: 1;
+      display: block;
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: inherit;
+      content: "";
+    }
+  }
+
+  // Improved ripple effect
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 0;
+    animation: ripple 0.8s ease-out;
+    transform: scale(0);
+    pointer-events: none;
+  }
+}
+
+// Card component
+.alt-card {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: $text-color;
+  font-size: $font-size-base;
+  background-color: #fff;
+  border-radius: $border-radius-card;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  &-head {
+    min-height: 48px;
+    margin-bottom: -1px;
+    padding: 0 24px;
+    color: $heading-color;
+    font-weight: 500;
+    font-size: 16px;
+    background: transparent;
+    border-bottom: 1px solid $border-color-base;
+    border-radius: $border-radius-card $border-radius-card 0 0;
+    display: flex;
+    align-items: center;
+
+    &-title {
+      display: inline-block;
+      flex: 1;
+      padding: 16px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &-body {
+    padding: 24px;
+  }
+}
+
+// Loading animation for card
+// @keyframes card-loading {
+//   0%,
+//   100% {
+//     background-position: 0% 50%;
+//   }
+//   50% {
+//     background-position: 100% 50%;
+//   }
+// }
+
+// // Pulse animation for processing status
+// @keyframes card-status-pulse {
+//   0% {
+//     box-shadow: 0 0 0 0 rgba($primary-color, 0.7);
+//   }
+//   70% {
+//     box-shadow: 0 0 0 6px rgba($primary-color, 0);
+//   }
+//   100% {
+//     box-shadow: 0 0 0 0 rgba($primary-color, 0);
+//   }
+// }
+// // Divider
+// .alt-divider {
+//   box-sizing: border-box;
+//   margin: 16px 0;
+//   padding: 0;
+//   color: $text-color;
+//   font-size: $font-size-base;
+//   font-variant: tabular-nums;
+//   line-height: 1.5715;
+//   list-style: none;
+//   background: $border-color-base;
+
+//   &-horizontal {
+//     display: flex;
+//     clear: both;
+//     width: 100%;
+//     min-width: 100%;
+//     height: 1px;
+//     margin: 24px 0;
+//   }
+
+//   &-vertical {
+//     position: relative;
+//     top: -0.06em;
+//     display: inline-block;
+//     height: 0.9em;
+//     margin: 0 8px;
+//     vertical-align: middle;
+//     border-top: 0;
+//     border-left: 1px solid $border-color-base;
+//   }
+
+//   &-dashed {
+//     background: none;
+//     border-color: $border-color-base;
+//     border-style: dashed;
+//     border-width: 1px 0 0;
+//   }
+
+//   &-vertical &-dashed {
+//     border-width: 0 0 0 1px;
+//   }
+
+//   // Text divider
+//   &-with-text {
+//     display: flex;
+//     align-items: center;
+//     margin: 16px 0;
+//     color: $heading-color;
+//     font-weight: 500;
+//     font-size: 16px;
+//     white-space: nowrap;
+//     text-align: center;
+//     background: transparent;
+
+//     &::before,
+//     &::after {
+//       position: relative;
+//       width: 50%;
+//       border-top: 1px solid $border-color-base;
+//       transform: translateY(50%);
+//       content: '';
+//     }
+
+//     &-left {
+//       &::before {
+//         width: 5%;
+//       }
+//       &::after {
+//         width: 95%;
+//       }
+//     }
+
+//     &-right {
+//       &::before {
+//         width: 95%;
+//       }
+//       &::after {
+//         width: 5%;
+//       }
+//     }
+
+//     &-inner-text {
+//       display: inline-block;
+//       padding: 0 1em;
+//     }
+//   }
+// }
