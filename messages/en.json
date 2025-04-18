@@ -40,7 +40,10 @@
     "messageSaved": "Saved posts",
     "loading": "Loading saved posts...",
     "post": "Post",
-    "removed": "removed from saved posts"
+    "removed": "removed from bookmarks",
+    "noBookmarks": "No bookmarks",
+    "readPost": "Read bookmark",
+    "removeBookmark": "Remove bookmark"
   },
   "contact": {
     "messageUnavailable": "Contact form currently unavailable"
