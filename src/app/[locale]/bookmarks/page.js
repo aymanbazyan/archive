@@ -1,7 +1,6 @@
 "use client";
 import { useLocale, useTranslations } from "next-intl";
-import { Button, Flex, List } from "antd";
-import AntdItem from "antd/es/list/Item";
+import { Button, Spin } from "antd";
 import Text from "antd/es/typography/Text";
 import { Icon } from "@iconify/react";
 import styles from "./page.module.scss";
@@ -16,104 +15,133 @@ function BookmarksPage() {
 
   const fetchData = useCallback(async (ids) => {
     const res = await fetch(`/api/posts?ids=${ids}`);
-    const psts = await res.json();
-    return psts;
-  });
-
-  useEffect(function () {
-    async function init() {
-      const ids = getFromLocal("bookmarks")?.join(",");
-      if (!ids) return;
-      setLoading(true);
-      try {
-        const psts = await fetchData(ids);
-        setData(psts);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    init();
+    const posts = await res.json();
+    return posts;
   }, []);
 
-  if (loading)
-    return (
-      <div className={styles.container}>
-        <Text strong>{t("loading")}</Text>
-      </div>
+  useEffect(
+    function () {
+      async function init() {
+        const ids = getFromLocal("bookmarks")?.join(",");
+        if (!ids) return;
+        setLoading(true);
+        try {
+          const posts = await fetchData(ids);
+          setData(posts);
+        } catch (e) {
+          console.log(e);
+        } finally {
+          setLoading(false);
+        }
+      }
+      init();
+    },
+    [fetchData]
+  );
+
+  const handleRemoveBookmark = (postId) => {
+    toggleSave(postId, () => "");
+    setData((prevData) =>
+      prevData.map((post) =>
+        post.id === postId ? { ...post, removed: "remove-pending" } : post
+      )
     );
+  };
+
+  const handleUndoRemove = (postId) => {
+    toggleSave(postId, () => "");
+    setData((prevData) =>
+      prevData.map((post) =>
+        post.id === postId ? { ...post, removed: false } : post
+      )
+    );
+  };
 
   return (
     <div className={styles.container}>
-      <List
-        style={{ width: "30rem" }}
-        header={
-          <div>
-            {t("messageSaved")} ({data.length})
+      <div className={styles.bookmarksList}>
+        <div className={styles.bookmarksListHeader}>
+          <span>{t("messageSaved")}</span>
+          <span className={styles.count}>{data.length}</span>
+        </div>
+
+        {loading ? (
+          <div className={styles.loadingState}>
+            <Spin size="large" className={styles.spinner} />
+            <div className={styles.message}>{t("loading")}</div>
           </div>
-        }
-        dataSource={data}
-        bordered
-        renderItem={(post) => <Item post={post} />}
-      />
+        ) : data.length === 0 ? (
+          <div className={styles.emptyState}>
+            <Icon icon="ph:bookmark-simple" className={styles.icon} />
+            <div className={styles.message}>{t("noBookmarks")}</div>
+          </div>
+        ) : (
+          <ul className={styles.bookmarksContent}>
+            {data.map((post) => (
+              <BookmarkItem
+                key={post.id}
+                post={post}
+                onRemove={handleRemoveBookmark}
+                onUndo={handleUndoRemove}
+              />
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
 
-export default BookmarksPage;
-
-function Item({ post }) {
-  const i = useLocale();
+function BookmarkItem({ post, onRemove, onUndo }) {
+  const locale = useLocale();
   const t = useTranslations("bookmarks");
-  const [removed, setRemoved] = useState(false);
 
   return (
-    <AntdItem>
-      {removed === "remove-pending" ? (
-        <Flex justify="space-between" style={{ width: "100%" }}>
-          <Text strong>
-            {t("post")} <Text mark>#{post.id}</Text> {t("removed")}
-          </Text>
+    <li className={styles.bookmarkItem}>
+      {post.removed === "remove-pending" ? (
+        <div className={styles.removedState}>
+          <span className={styles.removedText}>
+            {t("post")} <span className={styles.highlight}>#{post.id}</span>{" "}
+            {t("removed")}
+          </span>
           <Button
             icon={<Icon icon="ci:undo" />}
-            variant="dashed"
-            onClick={() => {
-              toggleSave(post.id, () => "");
-              setRemoved(false);
-            }}
+            className={styles.undoButton}
+            onClick={() => onUndo(post.id)}
           >
             Undo
           </Button>
-        </Flex>
+        </div>
       ) : (
-        <>
-          <Text mark>#{post.id}</Text> {post.titles[i]}{" "}
-          <div
-            style={{
-              marginTop: ".7rem",
-              display: "flex",
-              gap: ".8rem",
-              justifyContent: "space-between",
-            }}
-          >
+        <div className={styles.itemContent}>
+          <div className={styles.itemHeader}>
+            <span className={styles.itemId}>#{post.id}</span>
+            <span className={styles.itemTitle}>{post.titles[locale]}</span>
+          </div>
+
+          <div className={styles.itemActions}>
             <Link href={`/archive/${post.id}`}>
               <Button
+                type="default"
                 shape="circle"
+                className={styles.readButton}
                 icon={<Icon icon="circum:read" width={20} />}
+                title={t("readPost")}
               />
             </Link>
             <Button
-              onClick={() => {
-                toggleSave(post.id, () => "");
-                setRemoved("remove-pending");
-              }}
+              type="default"
               shape="circle"
-              icon={<Icon icon="tabler:trash" width={18} color="red" />}
+              className={styles.deleteButton}
+              icon={<Icon icon="tabler:trash" width={18} />}
+              onClick={() => onRemove(post.id)}
+              title={t("removeBookmark")}
             />
           </div>
-        </>
+        </div>
       )}
-    </AntdItem>
+    </li>
   );
 }
+
+export default BookmarksPage;
