@@ -40,7 +40,10 @@
     "messageSaved": "المقالات المحفوظة",
     "loading": "جار تحميل المحفوظات...",
     "post": "تم إزالة المقال رقم",
-    "removed": "من المحفوظات"
+    "removed": "من المحفوظات",
+    "noBookmarks": "لا يوجد أي منشورات محفوظة",
+    "readPost": "اقرأ المنشور",
+    "removeBookmark": "حذف من المحفوظات"
   },
   "contact": {
     "messageUnavailable": "غير متاح حاليًا"
