@@ -1,3 +1,4 @@
+"use server";
 import { getPost } from "@/lib/posts";
 import { createPost, deletePost } from "@/lib/posts-no-cache";
 import { createClient } from "@supabase/supabase-js";

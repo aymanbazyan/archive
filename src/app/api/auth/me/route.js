@@ -1,3 +1,4 @@
+"use server";
 import { getUserFromToken } from "@/lib/auth";
 
 async function GET(req) {
