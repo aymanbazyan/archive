@@ -5,98 +5,173 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
+// --- Constants ---
+const DRAFT_STORAGE_KEY = "adminPostDraft";
+
+// --- Dynamic Import for CKEditor Component ---
 const AdminTextarea = dynamic(
   () => import("@/components/other-comps/admin-textarea"),
   {
     ssr: false,
+    loading: () => <p>Loading Editor...</p>, // Added a loading state for the editor
   }
 );
 
+// --- Initial State Definition ---
+const getInitialFormData = () => ({
+  id: "",
+  author: "",
+  titles: { ar: "", en: "" },
+  bodies: { ar: "", en: "" }, // Editor content is now part of the main state
+});
+
 function AdminPanel() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [user, setUser] = useState(null);
-  const [formData, setFormData] = useState({
-    id: "",
-    author: "",
-    titles: { ar: "", en: "" },
-  });
-  const editorsData = useRef({});
+  const [formData, setFormData] = useState(getInitialFormData());
+  const [isDirty, setIsDirty] = useState(false); // Tracks if there are unsaved changes
 
-  useEffect(function () {
-    try {
-      async function initAuth() {
+  // --- Effect for Auth and Draft Restoration ---
+  useEffect(() => {
+    // 1. Authenticate user
+    async function initAuth() {
+      try {
         const cookie = getCookie("auth-token");
         if (!cookie) return;
         const res = await fetch(`/api/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${cookie}`,
-          },
+          headers: { Authorization: `Bearer ${cookie}` },
         });
-        // console.log(res);
-        if (res.status !== 200) return;
-        const data = await res.json();
-        // console.log(data);
-        setUser({
-          name: data.email.split("@")[0],
-          picture: "https://i.imgur.com/U2FbFq7.jpeg",
-        });
+        if (res.status === 200) {
+          const data = await res.json();
+          setUser({
+            name: data.email.split("@")[0],
+            picture: "https://i.imgur.com/U2FbFq7.jpeg",
+          });
+        }
+      } catch (err) {
+        console.error("Authentication failed:", err);
+      } finally {
+        setIsLoading(false);
       }
-      initAuth();
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsLoading(false);
     }
+
+    // 2. Check for and restore draft from localStorage
+    const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
+    if (savedDraft) {
+      if (
+        window.confirm("An unsaved draft was found. Do you want to restore it?")
+      ) {
+        setFormData(JSON.parse(savedDraft));
+        setIsDirty(true); // The restored draft is considered an "unsaved change"
+      } else {
+        localStorage.removeItem(DRAFT_STORAGE_KEY); // User chose not to restore
+      }
+    }
+
+    initAuth();
   }, []);
+
+  // --- Effect for Saving Draft to LocalStorage ---
+  useEffect(() => {
+    // If the form has changes and is not in the process of submitting, save a draft.
+    if (isDirty) {
+      const draft = JSON.stringify(formData);
+      localStorage.setItem(DRAFT_STORAGE_KEY, draft);
+    }
+  }, [formData, isDirty]);
+
+  // --- Effect for "Before Unload" Warning ---
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = ""; // Required for most browsers to show the prompt
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isDirty]);
 
   const handleSignOut = () => {
     deleteCookie("auth-token");
     setUser(null);
   };
 
+  // --- Unified Change Handler for Simple Inputs ---
   const handleChange = (e, section, lang) => {
     const { name, value } = e.target;
+    setIsDirty(true); // Mark form as dirty on any change
 
     if (section && lang) {
       setFormData((prev) => ({
         ...prev,
-        [section]: {
-          ...prev[section],
-          [lang]: value,
-        },
+        [section]: { ...prev[section], [lang]: value },
       }));
     } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
+  };
+
+  // --- New Handler for CKEditor Changes ---
+  const handleEditorChange = (language, data) => {
+    setIsDirty(true); // Mark form as dirty
+    setFormData((prev) => ({
+      ...prev,
+      bodies: { ...prev.bodies, [language]: data },
+    }));
+  };
+
+  const clearForm = () => {
+    setFormData(getInitialFormData());
+    setIsDirty(false);
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newPost = {
-      ...formData,
-      id: parseInt(formData.id),
-      bodies: { ...editorsData.current },
-    };
+    if (isSubmitting) return;
 
-    const confirm = window.confirm("Are you sure?");
+    const confirm = window.confirm(
+      "Are you sure you want to submit this post?"
+    );
     if (!confirm) return;
 
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("auth-token")}`,
-      },
-      body: JSON.stringify({ data: newPost }),
-    });
-    await res.json();
-    alert("done");
+    setIsSubmitting(true);
+    const postData = { ...formData, id: parseInt(formData.id, 10) };
+
+    try {
+      const res = await fetch("/api/posts", {
+        method: "POST", // This could be PUT if formData has an existing post._id
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getCookie("auth-token")}`,
+        },
+        body: JSON.stringify({ data: postData }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Error: ${res.statusText}`);
+      }
+
+      const { success } = await res.json();
+      if (success) {
+        alert("Post submitted successfully!");
+        clearForm();
+      }
+    } catch (error) {
+      console.error("Failed to submit post:", error);
+      alert("Failed to submit post. Check the console for details.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isLoading) return <p>Loading...</p>;
+
   return (
     <div className={styles.adminPanel}>
       <header className={styles.header}>
@@ -105,7 +180,7 @@ function AdminPanel() {
           <div className={styles.userInfo}>
             <img
               src={user.picture}
-              // alt={user.name}
+              alt={user.name}
               className={styles.userAvatar}
             />
             <span>{user.name}</span>
@@ -124,15 +199,21 @@ function AdminPanel() {
           <span className={styles.loggedOut}>Not Logged In</span>
         )}
       </div>
-      {!user && <Link href="/admin">go to login</Link>}
+      {!user && <Link href="/admin">Go to login</Link>}
 
       {user && (
         <div className={styles.contentContainer}>
-          <EditPost setFormData={setFormData} />
+          {/* EditPost now directly manipulates the main form state */}
+          <EditPost
+            setFormData={setFormData}
+            setIsDirty={setIsDirty}
+            clearForm={clearForm}
+          />
 
           <div className={styles.formContainer}>
-            <h2>Create New Post</h2>
+            <h2>Create / Edit Post</h2>
             <form onSubmit={handleSubmit} className={styles.postForm}>
+              {/* Form inputs are the same, but now there are editor components below */}
               <div className={styles.formGroup}>
                 <label htmlFor="id">Post ID:</label>
                 <input
@@ -193,17 +274,29 @@ function AdminPanel() {
                 <div className={styles.languageInputs}>
                   <div className={styles.langInput}>
                     <label htmlFor="body-ar">Arabic Body:</label>
-                    <AdminTextarea lan="ar" editorsData={editorsData} />
+                    <AdminTextarea
+                      lan="ar"
+                      data={formData.bodies.ar}
+                      onChange={(data) => handleEditorChange("ar", data)}
+                    />
                   </div>
                   <div className={styles.langInput}>
                     <label htmlFor="body-en">English Body:</label>
-                    <AdminTextarea lan="en" editorsData={editorsData} />
+                    <AdminTextarea
+                      lan="en"
+                      data={formData.bodies.en}
+                      onChange={(data) => handleEditorChange("en", data)}
+                    />
                   </div>
                 </div>
               </div>
 
-              <button type="submit" className={styles.submitButton}>
-                Create Post
+              <button
+                type="submit"
+                className={styles.submitButton}
+                disabled={isSubmitting || !isDirty}
+              >
+                {isSubmitting ? "Submitting..." : "Submit Post"}
               </button>
             </form>
           </div>
@@ -215,79 +308,103 @@ function AdminPanel() {
 
 export default AdminPanel;
 
-function EditPost({ setFormData }) {
+// --- Improved EditPost Component ---
+function EditPost({ setFormData, setIsDirty, clearForm }) {
+  const [isFetching, setIsFetching] = useState(false);
   const [post, setPost] = useState(null);
+  const searchInputRef = useRef(null);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const postId = searchInputRef.current.value;
+    if (!postId) {
+      setPost(null);
+      clearForm();
+      return;
+    }
+
+    setIsFetching(true);
+    setPost(null);
+
+    try {
+      const res = await fetch(`/api/posts?ids=${postId}`);
+      if (!res.ok) throw new Error("Post not found");
+      const data = await res.json();
+      const fetchedPost = data?.[0];
+
+      if (!fetchedPost) {
+        alert(`Post ${postId} not found!`);
+        clearForm();
+      } else {
+        // This is the magic! We set the entire form data, including bodies.
+        setFormData(fetchedPost);
+        setPost(fetchedPost);
+        setIsDirty(false); // We just loaded it, so it's not "dirty" yet.
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      alert(`Failed to fetch post ${postId}.`);
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (
+      !post ||
+      !window.confirm(`Are you sure you want to delete post ${post.id}?`)
+    )
+      return;
+
+    try {
+      const res = await fetch(`/api/posts?id=${post.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getCookie("auth-token")}`,
+        },
+      });
+      if (res.status === 200) {
+        alert("Post deleted successfully.");
+        setPost(null);
+        searchInputRef.current.value = "";
+        clearForm();
+      } else {
+        throw new Error("Failed to delete post.");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <div className={styles.previewContainer}>
-      <form
-        className={styles.langInput}
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const val = e.target[0].value;
-          if (!val) {
-            setPost(null);
-            setFormData({
-              id: "",
-              author: "",
-              titles: { ar: "", en: "" },
-            });
-          }
-          const res = await fetch(`/api/posts?ids=${val}`);
-          const data = await res.json();
-          const pst = data?.[0];
-          if (!pst) return alert(`Post ${val} not found!`);
-          setFormData(pst);
-          setPost(pst);
-        }}
-      >
-        <label htmlFor="edit">Edit post</label>
-        <input type="text" id="edit" className={styles.formInput} />
+      <form className={styles.langInput} onSubmit={handleSearch}>
+        <label htmlFor="edit">Edit post by ID</label>
+        <input
+          type="number"
+          id="edit"
+          className={styles.formInput}
+          ref={searchInputRef}
+        />
         <div>
           {post ? (
             <>
               <button
                 type="button"
-                className={styles.submitButton}
-                onClick={() => navigator.clipboard.writeText(post.bodies.ar)}
-              >
-                Copy arabic HTML
-              </button>{" "}
-              <button
-                type="button"
-                className={styles.submitButton}
-                onClick={() => navigator.clipboard.writeText(post.bodies.en)}
-              >
-                Copy english HTML
-              </button>{" "}
-              <button
-                type="button"
                 className={styles.deleteButton}
-                onClick={async () => {
-                  const res = await fetch(`/api/posts?id=${post.id}`, {
-                    method: "DELETE",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${getCookie("auth-token")}`,
-                    },
-                  });
-                  if (res.status === 200) {
-                    alert("success");
-                    setPost(null);
-                    setFormData({
-                      id: "",
-                      author: "",
-                      titles: { ar: "", en: "" },
-                    });
-                  }
-                }}
+                onClick={handleDelete}
               >
-                Delete post (id {post.id})
+                Delete Post (ID: {post.id})
               </button>
             </>
           ) : (
-            <button type="submit" className={styles.submitButton}>
-              Search
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={isFetching}
+            >
+              {isFetching ? "Searching..." : "Search"}
             </button>
           )}
         </div>

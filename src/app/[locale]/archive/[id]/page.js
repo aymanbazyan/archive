@@ -7,7 +7,10 @@ export async function generateMetadata({ params: { id } }) {
 
   return {
     title: `${post.titles.en} | ${post.titles.ar}`,
-    description: `${post.bodies.en} | ${post.bodies.ar}`,
+    description: `${post.bodies.en.replace(
+      /<\/?[^>]+(>|$)/g,
+      ""
+    )} | ${post.bodies.ar.replace(/<\/?[^>]+(>|$)/g, "")}`,
   };
 }
 

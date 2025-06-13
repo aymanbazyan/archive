@@ -1,7 +1,7 @@
 "use server";
 import { getPost } from "@/lib/posts";
-import { createPost, deletePost } from "@/lib/posts-no-cache";
-import { createClient } from "@supabase/supabase-js";
+import { createPost, deletePost } from "@/lib/posts";
+import { validateAuth } from "@/actions/auth-actions";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
@@ -29,21 +29,11 @@ export async function GET(request) {
 
 export async function POST(req) {
   try {
-    const reqData = await req.json();
-    // Initialize Supabase with the user's token
-    const supabase = createClient(
-      process.env.SUPABASE_URL,
-      process.env.SUPABASE_ANON_KEY,
-      {
-        global: {
-          headers: {
-            Authorization: req.headers.get("Authorization"),
-          },
-        },
-      }
-    );
+    // Validate admin session
+    await validateAuth();
 
-    await createPost(reqData.data, supabase);
+    const reqData = await req.json();
+    await createPost(reqData.data);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
@@ -56,23 +46,18 @@ export async function POST(req) {
 }
 
 export async function DELETE(req) {
-  const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id");
+  try {
+    // Validate admin session
+    await validateAuth();
 
-  // Initialize Supabase with the user's token
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_ANON_KEY,
-    {
-      global: {
-        headers: {
-          Authorization: req.headers.get("Authorization"),
-        },
-      },
-    }
-  );
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
 
-  const success = await deletePost(id, supabase);
-  if (success) return new Response({ status: 204 });
-  else return new Response({ status: 500 });
+    const success = await deletePost(id);
+    if (success) return new Response(null, { status: 204 });
+    else return new Response(null, { status: 500 });
+  } catch (error) {
+    console.error(error);
+    return new Response(null, { status: 500 });
+  }
 }

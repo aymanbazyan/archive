@@ -95,7 +95,9 @@ const getElementContent = (doc) => {
   const imgs = clone.querySelectorAll("img");
   imgs.forEach((img) => {
     const newElement = document.createElement("span");
-    newElement.textContent = `(${img.alt || "File preview"}) [${img.src}] `; // Add space after image
+    newElement.textContent = `(${img.alt || "File preview"}) [${
+      img.src.startsWith("data:") ? "Link unavailable" : img.src
+    }] `; // Add space after image
     img.replaceWith(newElement);
   });
 

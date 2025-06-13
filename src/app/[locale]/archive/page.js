@@ -5,7 +5,6 @@ import { DEFAULT_POSTS_LIM } from "@/helpers/config";
 import { getPosts, searchPosts } from "@/lib/posts";
 import ArchiveForm from "@/components/archive-comps/archive-form";
 import { isTextStartsWithArabic } from "@/helpers/functions";
-import { Suspense } from "react";
 
 export default async function ArchivePage({ searchParams }) {
   const awaitedSearchParams = await searchParams;
