@@ -2,23 +2,29 @@ import "./globals.scss";
 import MainHeader from "@/components/other-comps/main-header";
 import MainFooter from "@/components/other-comps/main-footer";
 import { NextIntlClientProvider } from "next-intl";
-import { metadata } from "@/helpers/config";
+import { getMessages } from "next-intl/server"; // Helper to get messages on the server
+import { metadata as metadataConfig } from "@/helpers/config";
 import "@ant-design/v5-patch-for-react-19";
 
-export async function generateMetadata({ params }) {
-  const lang = (await params).locale;
-
-  return metadata[lang] || metadata.en;
+// This function correctly generates metadata for the page
+export async function generateMetadata({ params: { locale } }) {
+  // Use the metadata from your config file, with a fallback to 'en'
+  return metadataConfig[locale] || metadataConfig.en;
 }
 
-export default async function LocaleLayout({ children, params }) {
-  const lang = (await params).locale;
-  const direction = lang === "ar" || lang === "he" ? "rtl" : "ltr";
+export default async function LocaleLayout({ children, params: { locale } }) {
+  // Set text direction based on language
+  const direction = locale === "ar" || locale === "he" ? "rtl" : "ltr";
+
+  // 1. Get messages for the current locale for NextIntlClientProvider
+  const messages = await getMessages();
 
   return (
-    <html lang={lang} dir={direction}>
+    // The <html> tag is correct here in the root layout
+    <html lang={locale} dir={direction}>
       <body>
-        <NextIntlClientProvider>
+        {/* 2. Pass locale and messages to the provider */}
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <div className="app">
             <div>
               <MainHeader />
